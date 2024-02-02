@@ -30,7 +30,9 @@
         </div>
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+          
           <ul id="sidebarnav">
+            {% block navbar %}
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">Home</span>
@@ -87,6 +89,7 @@
                 <span class="hide-menu">Typography</span>
               </a>
             </li>
+            {% endblock navbar %}
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
               <span class="hide-menu">AUTH</span>
@@ -107,27 +110,8 @@
                 <span class="hide-menu">Register</span>
               </a>
             </li>
-            <li class="nav-small-cap">
-              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-              <span class="hide-menu">EXTRA</span>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="" aria-expanded="false">
-                <span>
-                  <i class="ti ti-mood-happy"></i>
-                </span>
-                <span class="hide-menu">Icons</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="" aria-expanded="false">
-                <span>
-                  <i class="ti ti-aperture"></i>
-                </span>
-                <span class="hide-menu">Sample Page</span>
-              </a>
-            </li>
           </ul>
+          
 
         </nav>
         <!-- End Sidebar navigation -->
@@ -186,8 +170,10 @@
       <div class="container-fluid">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title fw-semibold mb-4">Sample Page</h5>
-            <p class="mb-0">This is a sample page </p>
+            {% block content %}
+              <h5 class="card-title fw-semibold mb-4">Base Page</h5>
+              <p class="mb-0">This is base page. You shouldn't be seing this.</p>
+            {% endblock content %}
           </div>
         </div>
       </div>

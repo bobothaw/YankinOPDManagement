@@ -17,12 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from common.views import base_view
-from UserAuthentication.views import login_view, logout_view
+from UserAuthentication.views import login_view, logout_view, doctor_view, unauthorized_view, admin_view, nurse_view, pharmacist_view, receptionist_view
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
     path('', base_view, name='base'),
     path('login/', login_view, name='login'),
     path('dashboard/', base_view, name = 'dashboard'),
-    path('logout/', logout_view, name='logout')
+    path('logout/', logout_view, name='logout'),
+    path('doctor/', doctor_view, name = 'doctor_dashboard'),
+    path('unauthorized/', unauthorized_view, name='unauthorized'),
+    path('admin_dash/', admin_view, name = 'admin_dashboard'),
+    path('nurse/', nurse_view, name = 'nurse_dashboard'),
+    path('pharmacist/', pharmacist_view, name = 'pharmacist_dashboard'),
+    path('receptionist/', receptionist_view, name = 'receptionist_dashboard'),
 ]
