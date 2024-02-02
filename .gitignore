@@ -1,0 +1,54 @@
+# Byte-compiled / optimized Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local development settings
+*.sqlite3
+*.db
+*.log
+
+# Media files
+media/
+
+# Static files
+staticfiles/
+
+# Virtual environment
+venv/
+env/
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Configuration files
+*.ini
+*.conf
+
+# Dependency directories
+node_modules/
+bower_components/
+
+# Compiled Python bytecode
+*.pyc
+
+# Translation files
+*.mo
+
+# Compiled translations
+locale/
+
+# macOS Finder metadata
+.DS_Store
+
+# Compiled Python files
+*.pyc
+
+# Compiled Cython files
+*.pyo
+
+# Compiled C extension files
+*.c
+*.so
