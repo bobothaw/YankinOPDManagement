@@ -3,21 +3,29 @@
     <span class="hide-menu">Patients</span>
 </li>
 <li class="sidebar-item">
-    <a class="sidebar-link" href="" aria-expanded="false">
+    <a class="sidebar-link" href="{% url "patientInsert" %}" aria-expanded="false">
     <span>
-        <i class="ti ti-layout-dashboard"></i>
+        <i class="fa-solid fa-user-plus fs-4"></i>
     </span>
-    <span class="hide-menu">Patients Info</span>
+    <span class="hide-menu">Add Patients</span>
+    </a>
+</li>
+<li class="sidebar-item">
+    <a class="sidebar-link" href="{% url "patientList" %}" aria-expanded="false">
+    <span>
+        <i class="fa-solid fa-user-pen fs-4"></i>
+    </span>
+    <span class="hide-menu">Edit Patients</span>
     </a>
 </li>
 <li class="nav-small-cap">
     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-    <span class="hide-menu">Queue</span>
+    <span class="hide-menu">Patient Queue</span>
 </li>
 <li class="sidebar-item">
     <a class="sidebar-link" href="" aria-expanded="false">
     <span>
-        <i class="ti ti-article"></i>
+        <i class="fa-solid fa-clipboard-list fs-4"></i>
     </span>
     <span class="hide-menu">Patient Queue Add</span>
     </a>
@@ -25,7 +33,7 @@
 <li class="sidebar-item">
     <a class="sidebar-link" href="" aria-expanded="false">
     <span>
-        <i class="ti ti-alert-circle"></i>
+        <i class="fa-solid fa-file-pen fs-4"></i>
     </span>
     <span class="hide-menu">Patient Queue Edit</span>
     </a>
@@ -33,7 +41,7 @@
 <li class="sidebar-item">
     <a class="sidebar-link" href="" aria-expanded="false">
     <span>
-        <i class="ti ti-alert-circle"></i>
+        <i class="fa-solid fa-person-circle-check fs-4"></i>
     </span>
     <span class="hide-menu">Completed Consulatations</span>
     </a>

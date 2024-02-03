@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
+from datetime import date
 
 # Create your views here.
 def login_view(request):
@@ -94,8 +95,9 @@ def pharmacist_view(request):
 @login_required
 @user_passes_test(is_receptionist, login_url='unauthorized')
 def receptionist_view(request):
+    today_date = date.today().strftime('%Y-%m-%d')
     user = request.user
-    return render(request, 'ReceptionApp/reception-dashboard.html', {'user': user})
+    return render(request, 'ReceptionApp/reception-dashboard.html', {'user': user, 'today_date': today_date})
 
 @login_required
 def dashboard_view(request):
