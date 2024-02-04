@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Patient, WaitingList
+from django.db.models import Q
 from datetime import date
 # Create your views here.
 
@@ -44,21 +45,47 @@ def patient_insert_view(request):
  
 def patient_list_view(request):
     user = request.user
+    original_patients = Patient.objects.all()
 
-    patients = Patient.objects.all()
+    # Get the search query from the GET parameters
+    query = request.GET.get('patientSearch', '')
 
-    paginator = Paginator(patients, 10)
+    if query:
+        # If there's a search query, filter the patients
+        search_results = original_patients.filter(
+            Q(patient_name__icontains=query) |
+            Q(NRCnum__icontains=query) |
+            Q(date_of_birth__icontains=query)
+        )
+        paginator = Paginator(search_results, 10)
+        try:
+            patients = paginator.page(request.GET.get('page', 1))
+        except PageNotAnInteger:
+            patients = paginator.page(1)
+        except EmptyPage:
+            patients = paginator.page(paginator.num_pages)
+    else:
+        # If no search query, use the original patient list for pagination
+        paginator = Paginator(original_patients, 10)
+        try:
+            patients = paginator.page(request.GET.get('page', 1))
+        except PageNotAnInteger:
+            patients = paginator.page(1)
+        except EmptyPage:
+            patients = paginator.page(paginator.num_pages)
 
-    page = request.GET.get('page', 1)
-    try:
-        patients = paginator.page(page)
-    except PageNotAnInteger:
-        # If the page parameter is not an integer, show the first page
-        patients = paginator.page(1)
-    except EmptyPage:
-        # If the page is out of range, show the last page
-        patients = paginator.page(paginator.num_pages)
+    return render(request, 'ReceptionApp/reception-edit.html', {'patients': patients, 'today_date': today_date, 'user': user, 'query': query})
 
+def patient_search(request):
+    user = request.user
+    query = request.POST.get('patientSearch', '')
+    patients_query_set = Patient.objects.filter(
+        Q(patient_name__icontains=query) |
+        Q(NRCnum__icontains=query) |
+        Q(date_of_birth__icontains=query)
+    )
+    paginator = Paginator(patients_query_set, 10)
+    patients = paginator.get_page(request.GET.get('page', 1))
     return render(request, 'ReceptionApp/reception-edit.html', {'patients': patients, 'today_date': today_date, 'user':user})
 
 def edit_patient_view(request, patient_id):
@@ -88,3 +115,15 @@ def patientEdit (request, patient_id):
         except Exception as e:
             error_message = f"Error: {e}"
             return render(request, 'ReceptionApp/reception-edit.html', {'patients': patients, 'today_date': today_date, 'user': user, 'error_message': error_message})
+        
+def queue_view(request, patient_id):
+    user = request.user
+    patient = get_object_or_404(Patient, pk=patient_id)
+    patients = Patient.objects.all()
+    try:
+        newqueue = WaitingList(patient=patient, insert_by=user, last_edit_by=user)
+        newqueue.save() 
+        return render(request, 'ReceptionApp/reception-edit.html', {'patients': patients, 'today_date': today_date, 'user': user, 'success_message': "The patient is queued in today's list successfully."})
+    except Exception as e:
+        error_message = f"Error: {e}"
+        return render(request, 'ReceptionApp/reception-edit.html', {'patients': patients, 'today_date': today_date, 'user': user, 'error_message': error_message})

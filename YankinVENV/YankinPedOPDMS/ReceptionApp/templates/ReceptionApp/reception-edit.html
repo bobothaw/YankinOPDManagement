@@ -59,18 +59,19 @@
     
   </form>
 {% elif patients %}
-{% if success_message %}
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Success: </strong> {{success_message}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% elif error_message %}
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    Oh noo {{user.first_name}} {{user.last_name}}, {{error_message}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% endif %}
+    {% if success_message %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success: </strong> {{success_message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% elif error_message %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Oh noo {{user.first_name}} {{user.last_name}}, {{error_message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
 <div class="table-responsive mb-3">
+    
     <table class="table">
         <thead>
         <tr>
@@ -84,7 +85,8 @@
             <th scope="col">Guardian</th>
             <th scope="col">Relationship</th>
             <th scope="col">Address</th>
-            <th scope="col">Action</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Queue</th>
         </tr>
         </thead>
         <tbody class="table-group-divider">
@@ -103,6 +105,9 @@
                     <td>
                         <a href="{% url 'edit_view' patient.id %}">Edit</a>
                     </td>
+                    <td>
+                        <a href="{% url 'patientQueue' patient.id %}">Queue</a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -110,40 +115,39 @@
 </div>
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
-
         {% if patients.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?page=1" aria-label="First">
+                <a class="page-link" href="?page=1{% if query %}&patientSearch={{ query }}{% endif %}" aria-label="First">
                     <span aria-hidden="true">&laquo;&laquo;</span>
                 </a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?page={{ patients.previous_page_number }}" aria-label="Previous">
+                <a class="page-link" href="?page={{ patients.previous_page_number }}{% if query %}&patientSearch={{ query }}{% endif %}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
         {% endif %}
-
+    
         {% for page in patients.paginator.page_range %}
             <li class="page-item {% if page == patients.number %}active{% endif %}">
-                <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                <a class="page-link" href="?page={{ page }}{% if query %}&patientSearch={{ query }}{% endif %}">{{ page }}</a>
             </li>
         {% endfor %}
-
+    
         {% if patients.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ patients.next_page_number }}" aria-label="Next">
+                <a class="page-link" href="?page={{ patients.next_page_number }}{% if query %}&patientSearch={{ query }}{% endif %}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?page={{ patients.paginator.num_pages }}" aria-label="Last">
+                <a class="page-link" href="?page={{ patients.paginator.num_pages }}{% if query %}&patientSearch={{ query }}{% endif %}" aria-label="Last">
                     <span aria-hidden="true">&raquo;&raquo;</span>
                 </a>
             </li>
         {% endif %}
-
     </ul>
+    
 </nav>
 {% endif %}
 

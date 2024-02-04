@@ -1,0 +1,4 @@
+<form method="get" action="{% url 'patientList' %}" class="input-group mb-2">
+    <input type="text" name="patientSearch" class="form-control" placeholder="Search for patients..." value="{{ request.GET.patientSearch }}">
+    <button type="submit" class="btn btn-outline-primary">Search</button>
+</form>

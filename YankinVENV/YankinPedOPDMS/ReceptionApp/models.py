@@ -34,3 +34,6 @@ class WaitingList(models.Model):
     def __str__(self):
         return f"{self.patient.patient_name} - {self.consult_date}"
     
+    class Meta:
+        unique_together = ['patient', 'consult_date']
+    
