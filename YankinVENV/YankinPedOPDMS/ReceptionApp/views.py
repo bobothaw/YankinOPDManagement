@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Patient, WaitingList
 from datetime import date
 # Create your views here.
@@ -45,6 +46,19 @@ def patient_list_view(request):
     user = request.user
 
     patients = Patient.objects.all()
+
+    paginator = Paginator(patients, 10)
+
+    page = request.GET.get('page', 1)
+    try:
+        patients = paginator.page(page)
+    except PageNotAnInteger:
+        # If the page parameter is not an integer, show the first page
+        patients = paginator.page(1)
+    except EmptyPage:
+        # If the page is out of range, show the last page
+        patients = paginator.page(paginator.num_pages)
+
     return render(request, 'ReceptionApp/reception-edit.html', {'patients': patients, 'today_date': today_date, 'user':user})
 
 def edit_patient_view(request, patient_id):

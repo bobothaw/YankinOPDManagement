@@ -70,13 +70,13 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endif %}
-<div class="table-responsive">
+<div class="table-responsive mb-3">
     <table class="table">
         <thead>
         <tr>
             <th scope="col">ID</th>
-            <th scope="col">Patient Name</th>
-            <th scope="col">Date of Birth</th>
+            <th scope="col">Name</th>
+            <th scope="col">DOB</th>
             <th scope="col">Gender</th>
             <th scope="col">NRC</th>
             <th scope="col">Father</th>
@@ -108,6 +108,43 @@
         </tbody>
     </table>
 </div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+
+        {% if patients.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ patients.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {% endif %}
+
+        {% for page in patients.paginator.page_range %}
+            <li class="page-item {% if page == patients.number %}active{% endif %}">
+                <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+            </li>
+        {% endfor %}
+
+        {% if patients.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ patients.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ patients.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+        {% endif %}
+
+    </ul>
+</nav>
 {% endif %}
 
 
