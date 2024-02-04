@@ -7,7 +7,7 @@
 {% block content %}
 {% if error_message %}
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        Oh noo {{user.first_name}} {{user.last_name}}, {{error_message}}
+        Oh noo, {{user.first_name}} {{user.last_name}}. {{error_message}}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 {% endif %}
