@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Patient, WaitingList
 from django.db.models import Q
-from datetime import date
+from datetime import date, datetime
 from django.conf import settings
 # Create your views here.
 
@@ -128,3 +128,51 @@ def queue_view(request, patient_id):
     except Exception as e:
         error_message = f"Error: {e}"
         return render(request, 'ReceptionApp/reception-edit.html', {'patients': patients, 'today_date': today_date, 'user': user, 'error_message': error_message})
+
+def today_queue_view (request):
+    user = request.user
+    
+    waitingListQuery = WaitingList.objects.filter(consult_date = date.today()).order_by('queue_date_time')
+    paginator = Paginator(waitingListQuery, 10)
+    waitingLists = paginator.get_page(request.GET.get('page', 1))        
+    return render(request, 'ReceptionApp/reception-queue.html', {'waitingLists': waitingLists, 'user':user})
+
+def delete_queue_view(request, waitinglist_id):
+    user = request.user
+    queue_patient = get_object_or_404(WaitingList, pk=waitinglist_id)
+    waitingListQuery = WaitingList.objects.filter(consult_date = date.today()).order_by('queue_date_time')
+    paginator = Paginator(waitingListQuery, 10)
+    waitingLists = paginator.get_page(request.GET.get('page', 1))
+    try:
+        queue_patient.delete()
+        return render(request, 'ReceptionApp/reception-queue.html', {'waitingLists': waitingLists, 'user': user, 'success_message': 'Patient removed from waiting list successfully!'})
+    except Exception as e:
+        error_message = f"Error: {e}"
+        return render(request, 'ReceptionApp/reception-queue.html', {'waitingLists': waitingLists, 'user': user, 'error_message': error_message})
+
+def all_queue_view (request):
+    user = request.user
+    allwaitingList = WaitingList.objects.all()
+    
+    query = request.GET.get('queueSearch', '')
+
+    if query:
+        try:
+            search_date = datetime.strptime(query, '%Y-%m-%d').date()
+            # Filter the WaitingList queryset
+            waitingListQuery = WaitingList.objects.filter(consult_date=search_date)
+        except ValueError:
+        # Handle if the query is not a valid date
+        # For example, you can ignore the date search and only search for the patient name
+            waitingListQuery = WaitingList.objects.filter(
+                patient__patient_name__icontains=query
+            )
+        paginator = Paginator(waitingListQuery, 10)
+        waitingLists = paginator.get_page(request.GET.get('page', 1))
+        return render(request, 'ReceptionApp/reception-queue.html', {'waitingLists': waitingLists, 'today_date': today_date, 'user':user, 'query': query, 'request': request})
+    else:
+        paginator = Paginator(allwaitingList, 10)
+        waitingLists = paginator.get_page(request.GET.get('page', 1))
+        return render(request, 'ReceptionApp/reception-queue.html', {'waitingLists': waitingLists, 'today_date': today_date, 'user':user, 'request': request})
+    
+

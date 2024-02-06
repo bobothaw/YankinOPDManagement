@@ -1,0 +1,121 @@
+{% extends "common/base.html" %}
+
+{% block navbar %}
+{% include "ReceptionApp/receptionnav.html" %}
+{% endblock navbar %}
+
+{% block content %}
+{% if request.path == '/ReceptionApp/allqueue/' %}
+<form method="get" action="{% url 'allqueue' %}" class="input-group mb-2">
+    <input type="text" name="queueSearch" class="form-control" placeholder="Search by name or consult date (YYYY-MM-DD)....." value="{{ request.GET.queueSearch }}">
+    <button type="submit" class="btn btn-outline-primary">Search</button>
+</form>
+{% endif %}
+{% if success_message %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Success: </strong> {{success_message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% elif error_message %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    Oh noo {{user.first_name}} {{user.last_name}}, {{error_message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+{% if waitingLists|length > 0 %}
+<div class="table-responsive mb-3">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Number</th>
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Guardian</th>
+            {% if request.path == '/ReceptionApp/allqueue/' %}
+                <th scope="col">Consult Date</th>
+            {% else %}
+                <th scope="col">Ready to Consult</th>
+                <th scope="col">Remove</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for waitingItem in waitingLists %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{waitingItem.patient.patient_name}}</td>
+                    {% load custom_filters %}
+                    {% with patient_dob=waitingItem.patient.date_of_birth %}
+                        <td>{{ patient_dob|calculate_age }}</td>
+                    {% endwith %}
+                    <td>{{waitingItem.patient.gender}}</td>
+                    <td>{{waitingItem.patient.guardian_name}}</td>
+                    <td>
+                        {% if request.path == '/ReceptionApp/allqueue/' %}
+                            {{waitingItem.consult_date}}
+                        {% else %}
+                            {% if waitingItem.isReady %}
+                                <span class="text-success rounded-circle p-2">
+                                    <i class="fa-solid fa-circle-check fs-6"></i>
+                                </span>
+                            {% else %}
+                                <span class="text-danger rounded-circle p-2">
+                                    <i class="fa-solid fa-circle-xmark fs-6"></i>
+                                </span>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    
+                    {% if request.path != '/ReceptionApp/allqueue/' %}
+                        <td>
+                            <a href="{% url 'deletequeue' waitingItem.id %}">Remove</a>
+                        </td>
+                    {% endif %}
+                        
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        {% if waitingLists.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1{% if query %}&queueSearch={{ query }}{% endif %}" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ waitingLists.previous_page_number }}{% if query %}&queueSearch={{ query }}{% endif %}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {% endif %}
+    
+        {% for page in waitingLists.paginator.page_range %}
+            <li class="page-item {% if page == waitingLists.number %}active{% endif %}">
+                <a class="page-link" href="?page={{ page }}{% if query %}&queueSearch={{ query }}{% endif %}">{{ page }}</a>
+            </li>
+        {% endfor %}
+    
+        {% if waitingLists.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ waitingLists.next_page_number }}{% if query %}&queueSearch={{ query }}{% endif %}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ waitingLists.paginator.num_pages }}{% if query %}&queueSearch={{ query }}{% endif %}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% elif waitingLists|length == 0 %}
+<h5 class= "mt-3">No patients matches your search</h5>
+{% endif %}
+
+
+{% endblock content %}

@@ -61,16 +61,16 @@
 {% elif patients|length > 0 %}
 {% include "ReceptionApp/searchform.html" %}
 {% if success_message %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Success: </strong> {{success_message}}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% elif error_message %}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        Oh noo {{user.first_name}} {{user.last_name}}, {{error_message}}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endif %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Success: </strong> {{success_message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% elif error_message %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    Oh noo {{user.first_name}} {{user.last_name}}, {{error_message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
 <div class="table-responsive mb-3">
     
     <table class="table">

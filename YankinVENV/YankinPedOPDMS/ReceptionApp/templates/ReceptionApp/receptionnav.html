@@ -23,26 +23,18 @@
     <span class="hide-menu">Patient Queue</span>
 </li>
 <li class="sidebar-item">
-    <a class="sidebar-link" href="" aria-expanded="false">
+    <a class="sidebar-link" href="{% url "todayqueue" %}" aria-expanded="false">
     <span>
         <i class="fa-solid fa-clipboard-list fs-4"></i>
     </span>
-    <span class="hide-menu">Patient Queue List</span>
+    <span class="hide-menu">Today's Waiting List</span>
     </a>
 </li>
 <li class="sidebar-item">
-    <a class="sidebar-link" href="" aria-expanded="false">
+    <a class="sidebar-link" href="{% url "allqueue" %}" aria-expanded="false">
     <span>
-        <i class="fa-solid fa-file-pen fs-4"></i>
+        <i class="fa-solid fa-book-medical fs-4"></i>
     </span>
-    <span class="hide-menu">Patient Queue Edit</span>
-    </a>
-</li>
-<li class="sidebar-item">
-    <a class="sidebar-link" href="" aria-expanded="false">
-    <span>
-        <i class="fa-solid fa-person-circle-check fs-4"></i>
-    </span>
-    <span class="hide-menu">Completed Consulatations</span>
+    <span class="hide-menu">Waiting List History</span>
     </a>
 </li>
