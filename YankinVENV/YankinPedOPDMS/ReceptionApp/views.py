@@ -4,6 +4,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Patient, WaitingList
 from django.db.models import Q
 from datetime import date
+from django.conf import settings
 # Create your views here.
 
 today_date = date.today().strftime('%Y-%m-%d')
@@ -39,9 +40,9 @@ def patient_insert_view(request):
             
         except Exception as e:
             error_message = f"Error: {e}"
-            return render(request, 'ReceptionApp/reception-dashboard.html', {'user': user, 'error_message':error_message, 'today_date': today_date})
+            return render(request, 'ReceptionApp/reception-dashboard.html', {'user': user, 'error_message':error_message, 'today_date': today_date, 'MEDIA_URL': settings.MEDIA_URL})
     else:
-        return render(request, 'ReceptionApp/reception-dashboard.html', {'user': user, 'today_date': today_date})
+        return render(request, 'ReceptionApp/reception-dashboard.html', {'user': user, 'today_date': today_date, 'MEDIA_URL': settings.MEDIA_URL})
  
 def patient_list_view(request):
     user = request.user
