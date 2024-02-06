@@ -28,6 +28,7 @@ class WaitingList(models.Model):
     temperature = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     weight = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     blood_pressure = models.DecimalField(max_digits=20, decimal_places=2, null=True)
+    isReady = models.BooleanField(default=False)
     insert_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='waiting_lists_inserted')
     last_edit_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='waiting_lists_last_edited')
 
