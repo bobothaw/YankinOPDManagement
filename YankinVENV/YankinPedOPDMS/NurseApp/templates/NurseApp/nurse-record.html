@@ -1,0 +1,61 @@
+{% extends "common/base.html" %}
+
+{% block navbar %}
+{% include "NurseApp/nursenav.html" %}
+{% endblock navbar %}
+
+{% block content %}
+<form method ="post", action = "{% url "patientEdit" waitingList.id %}">
+    {% csrf_token %}
+     <div class="mb-3">
+      <label for="fullName" class="form-label">Full Name</label>
+      <input type="text" class="form-control" id="fullName" aria-describedby="emailHelp" name = "FullName" value="{{patient.patient_name}}" required >
+    </div>
+    <div class="mb-3">
+      <label for="dob" class="form-label">Date of Birth</label>
+      <input type="date" class="form-control" id="dob" max = "{{today_date}}" name = "DOB" value="{{patient.date_of_birth|date:'Y-m-d'}}"  required>
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Gender</label>
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" name="GenderRadio" id="Male" value = "Male" required {% if patient.gender == 'Male' %}checked{% endif %}>
+            <label class="form-check-label" for="Male">
+            Male
+        </label>
+        </div>
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" name="GenderRadio" id="Female" value = "Female" required {% if patient.gender == 'Female' %}checked{% endif %}>
+            <label class="form-check-label" for="Female">
+            Female
+        </label>
+        </div>
+    </div>
+    <div class="mb-3">
+      <label for="" class="form-label">NRC Number</label>
+      <input type="text" class="form-control" id="" aria-describedby="emailHelp" name = "NRC" required value="{{patient.NRCnum}}">
+    </div>
+    <div class="mb-3">
+      <label for="" class="form-label">Father Name</label>
+      <input type="text" class="form-control" id="" aria-describedby="emailHelp" name = "FatherName" required value="{{patient.father_name}}">
+    </div>
+    <div class="mb-3">
+      <label for="" class="form-label">Mother Name</label>
+      <input type="text" class="form-control" id="" aria-describedby="emailHelp" name = "MotherName" required value="{{patient.mother_name}}">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Guardian Name</label>
+        <input type="text" class="form-control" id="" aria-describedby="emailHelp" name = "GuardianName" required value="{{patient.guardian_name}}">
+    </div>
+    <div class="mb-3">
+      <label for="" class="form-label">Relationship with patient</label>
+      <input type="text" class="form-control" id="" aria-describedby="emailHelp" name = "Relationship" required value="{{patient.relationship}}">
+    </div>
+    <div class="mb-3">
+      <label for="" class="form-label">Address</label>
+      <input type="text" class="form-control" id="" aria-describedby="emailHelp" name = "Address" required value="{{patient.address}}">
+    </div>
+    <button type="submit" class="btn btn-primary col-12">Edit</button>
+    
+</form>
+
+{% endblock content %}

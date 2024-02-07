@@ -5,32 +5,34 @@
 {% endblock navbar %}
 
 {% block content %}
-<div class="card-group">
+<div class="row row-cols-1 row-cols-md-2 g-4">
 {% for waitingItem in waitingLists %}
-    <div class="card">
-        <div class="rounded-circle p-3 text-primary bg-light">
-            {{forloop.counter}}
-        </div>
-        <div class="card-body">
-        <h5 class="card-title">Patient Name: {{waitingItem.patient.patient_name}}</h5>
-        <p class="card-text">
-            Gender: {{waitingItem.patient.gender}}
-        </p>
-        <p class="card-text">
-            Guardian: {{waitingItem.patient.guardian_name}}
-        </p>
-        <p class="card-text">
-            {% load custom_filters %}
-            {% with patient_dob=waitingItem.patient.date_of_birth %}
-                Age: {{ patient_dob|calculate_age }}
-            {% endwith %}
-        </p>
-        <p class="card-text">
-            <small class="text-muted">Added {{waitingItem.queue_date_time|timesince}} ago.</small>
-        </p>
-        <a href="" class="btn btn-primary">
-            Record
-        </a>
+    <div class="col">
+        <div class="card">
+            <div class=" p-3 text-primary text-center bg-light card-title">
+                Waiting Number: {{forloop.counter}}
+            </div>
+            <div class="card-body">
+            <h5 class="card-title">Patient Name: {{waitingItem.patient.patient_name}}</h5>
+            <p class="card-text">
+                Gender: {{waitingItem.patient.gender}}
+            </p>
+            <p class="card-text">
+                Guardian: {{waitingItem.patient.guardian_name}}
+            </p>
+            <p class="card-text">
+                {% load custom_filters %}
+                {% with patient_dob=waitingItem.patient.date_of_birth %}
+                    Age: {{ patient_dob|calculate_age }}
+                {% endwith %}
+            </p>
+            <p class="card-text">
+                <small class="text-muted">Added {{waitingItem.queue_date_time|timesince}} ago.</small>
+            </p>
+            <a href="" class="btn btn-primary">
+                Record
+            </a>
+            </div>
         </div>
     </div>
 {% endfor %}
