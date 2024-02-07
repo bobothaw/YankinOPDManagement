@@ -19,7 +19,6 @@
 {% endif %}
 
 <h5 class="card-title fw-semibold mb-4 text-center">Patient Registeration Form</h5>
-<p>{{user.first_name}} {{user.last_name}}</p>
 <form method ="post", action = "{% url "patientInsert" %}">
     {% csrf_token %}
      <div class="mb-3">

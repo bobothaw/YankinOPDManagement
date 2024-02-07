@@ -44,6 +44,7 @@ def patient_insert_view(request):
     else:
         return render(request, 'ReceptionApp/reception-dashboard.html', {'user': user, 'today_date': today_date, 'MEDIA_URL': settings.MEDIA_URL})
  
+@login_required
 def patient_list_view(request):
     user = request.user
     original_patients = Patient.objects.all()
@@ -77,6 +78,7 @@ def patient_list_view(request):
 
     return render(request, 'ReceptionApp/reception-edit.html', {'patients': patients, 'today_date': today_date, 'user': user, 'query': query})
 
+@login_required
 def patient_search(request):
     user = request.user
     query = request.POST.get('patientSearch', '')
@@ -89,12 +91,14 @@ def patient_search(request):
     patients = paginator.get_page(request.GET.get('page', 1))
     return render(request, 'ReceptionApp/reception-edit.html', {'patients': patients, 'today_date': today_date, 'user':user})
 
+@login_required
 def edit_patient_view(request, patient_id):
     user = request.user
     patient = get_object_or_404(Patient, pk=patient_id)
     # You can add the logic for updating patient data here
     return render(request, 'ReceptionApp/reception-edit.html', {'patient': patient, 'today_date': today_date, 'user':user})
 
+@login_required
 def patientEdit (request, patient_id):
     user = request.user
     patient = get_object_or_404(Patient, pk=patient_id)
@@ -116,7 +120,8 @@ def patientEdit (request, patient_id):
         except Exception as e:
             error_message = f"Error: {e}"
             return render(request, 'ReceptionApp/reception-edit.html', {'patients': patients, 'today_date': today_date, 'user': user, 'error_message': error_message})
-        
+
+@login_required      
 def queue_view(request, patient_id):
     user = request.user
     patient = get_object_or_404(Patient, pk=patient_id)
@@ -129,6 +134,7 @@ def queue_view(request, patient_id):
         error_message = f"Error: {e}"
         return render(request, 'ReceptionApp/reception-edit.html', {'patients': patients, 'today_date': today_date, 'user': user, 'error_message': error_message})
 
+@login_required
 def today_queue_view (request):
     user = request.user
     
@@ -137,6 +143,7 @@ def today_queue_view (request):
     waitingLists = paginator.get_page(request.GET.get('page', 1))        
     return render(request, 'ReceptionApp/reception-queue.html', {'waitingLists': waitingLists, 'user':user})
 
+@login_required
 def delete_queue_view(request, waitinglist_id):
     user = request.user
     queue_patient = get_object_or_404(WaitingList, pk=waitinglist_id)
@@ -150,6 +157,7 @@ def delete_queue_view(request, waitinglist_id):
         error_message = f"Error: {e}"
         return render(request, 'ReceptionApp/reception-queue.html', {'waitingLists': waitingLists, 'user': user, 'error_message': error_message})
 
+@login_required
 def all_queue_view (request):
     user = request.user
     allwaitingList = WaitingList.objects.all()
