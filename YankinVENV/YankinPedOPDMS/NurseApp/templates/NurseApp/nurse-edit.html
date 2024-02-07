@@ -1,0 +1,13 @@
+{% extends "NurseApp/nurse-record.html" %}
+
+{% block form_action %}{% url 'nurseEdit' waitingItem.id %}{% endblock %}
+
+{% block headerText %}
+    Edit Patient's Vital Signs Here!!
+{% endblock headerText %}
+
+
+
+{% block btnText %}
+    Edit
+{% endblock btnText %}

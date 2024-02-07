@@ -1,0 +1,32 @@
+{% extends "NurseApp/nurse-dashboard.html" %}
+
+{% block noDataText %}
+    The vital signs of patints in today's waiting list are not recorded yet. 
+{% endblock noDataText %}
+
+{% block textColor %}
+text-success
+{% endblock textColor %}
+
+{% block linkText %}
+    Edit
+{% endblock linkText %}
+
+{% block urlText %}
+    {% url "nurseEdit" waitingItem.id %}
+{% endblock urlText %}
+
+{% block vitalSigns %}
+
+<p class="card-text fw-bold">
+    Temperature: {{waitingItem.temperature}}
+</p>
+<p class="card-text fw-bold">
+    Body Weight: {{waitingItem.weight}}
+</p>
+<p class="card-text fw-bold">
+    Blood Pressure(systole/diastole): {{waitingItem.systole}}/{{waitingItem.diastole}}
+</p>
+
+
+{% endblock vitalSigns %}

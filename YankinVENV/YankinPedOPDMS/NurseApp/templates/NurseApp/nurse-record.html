@@ -5,56 +5,51 @@
 {% endblock navbar %}
 
 {% block content %}
-<form method ="post", action = "{% url "patientEdit" waitingList.id %}">
+
+
+
+<form method="post" action="{% block form_action %}{% url 'nurseRecord' waitingItem.id %}{% endblock %}">
     {% csrf_token %}
-     <div class="mb-3">
-      <label for="fullName" class="form-label">Full Name</label>
-      <input type="text" class="form-control" id="fullName" aria-describedby="emailHelp" name = "FullName" value="{{patient.patient_name}}" required >
-    </div>
-    <div class="mb-3">
-      <label for="dob" class="form-label">Date of Birth</label>
-      <input type="date" class="form-control" id="dob" max = "{{today_date}}" name = "DOB" value="{{patient.date_of_birth|date:'Y-m-d'}}"  required>
-    </div>
-    <div class="mb-3">
-        <label for="" class="form-label">Gender</label>
-        <div class="form-check mb-2">
-            <input class="form-check-input" type="radio" name="GenderRadio" id="Male" value = "Male" required {% if patient.gender == 'Male' %}checked{% endif %}>
-            <label class="form-check-label" for="Male">
-            Male
-        </label>
+    <div class="card">
+      <div class=" p-3 text-primary text-center bg-light card-title">
+          {% block headerText %}Record Patient's Vital Signs here!!{% endblock headerText %} 
+      </div>
+      <div class="card-body">
+      <h5 class="card-title">Patient Name: {{waitingItem.patient.patient_name}}</h5>
+      <p class="card-text">
+          Gender: {{waitingItem.patient.gender}}
+      </p>
+      <p class="card-text">
+          Guardian: {{waitingItem.patient.guardian_name}}
+      </p>
+      <p class="card-text">
+          {% load custom_filters %}
+          {% with patient_dob=waitingItem.patient.date_of_birth %}
+              Age: {{ patient_dob|calculate_age }}
+          {% endwith %}
+      </p>
+      <div class="mb-3 row">
+        <label for="Temperature" class="col-sm-2 col-form-label">Temperature in °F: </label>
+        <div class="col-sm-10">
+          <input type="number" class="form-control" id="Temperature" step=".01" name="temp" min="80" max="110" required value="{{waitingItem.temperature}}">
         </div>
-        <div class="form-check mb-2">
-            <input class="form-check-input" type="radio" name="GenderRadio" id="Female" value = "Female" required {% if patient.gender == 'Female' %}checked{% endif %}>
-            <label class="form-check-label" for="Female">
-            Female
-        </label>
+      </div>
+      <div class="mb-3 row">
+        <label for="Weight" class="col-sm-2 col-form-label">Body Weight in Kg: </label>
+        <div class="col-sm-10">
+          <input type="number" class="form-control" id="Weight" step=".01" name="weight" min="0.2" max="150" required value="{{waitingItem.weight}}">
         </div>
-    </div>
-    <div class="mb-3">
-      <label for="" class="form-label">NRC Number</label>
-      <input type="text" class="form-control" id="" aria-describedby="emailHelp" name = "NRC" required value="{{patient.NRCnum}}">
-    </div>
-    <div class="mb-3">
-      <label for="" class="form-label">Father Name</label>
-      <input type="text" class="form-control" id="" aria-describedby="emailHelp" name = "FatherName" required value="{{patient.father_name}}">
-    </div>
-    <div class="mb-3">
-      <label for="" class="form-label">Mother Name</label>
-      <input type="text" class="form-control" id="" aria-describedby="emailHelp" name = "MotherName" required value="{{patient.mother_name}}">
-    </div>
-    <div class="mb-3">
-        <label for="" class="form-label">Guardian Name</label>
-        <input type="text" class="form-control" id="" aria-describedby="emailHelp" name = "GuardianName" required value="{{patient.guardian_name}}">
-    </div>
-    <div class="mb-3">
-      <label for="" class="form-label">Relationship with patient</label>
-      <input type="text" class="form-control" id="" aria-describedby="emailHelp" name = "Relationship" required value="{{patient.relationship}}">
-    </div>
-    <div class="mb-3">
-      <label for="" class="form-label">Address</label>
-      <input type="text" class="form-control" id="" aria-describedby="emailHelp" name = "Address" required value="{{patient.address}}">
-    </div>
-    <button type="submit" class="btn btn-primary col-12">Edit</button>
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text">Blood Pressure: Systolic/Diastolic</span>
+        <input type="number" aria-label="Systolic Blood Pressure" class="form-control" step=".01" name="systole" min="40" max="200" required value="{{waitingItem.systole}}">
+        <input type="number" aria-label="Diastolic Blood Pressure" class="form-control" step=".01" name="diastole" min="20" max="140" required value="{{waitingItem.diastole}}"> 
+      </div>
+      <button type="submit" class="btn btn-primary col-12">
+        {% block btnText %}Record{% endblock btnText %}  
+      </button>
+      </div>
+  </div>
     
 </form>
 
