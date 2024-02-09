@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import date
+from PharmacistApp.models import MedicineType
 
+today_date = date.today().strftime('%Y-%m-%d')
 # Create your views here.
 def login_view(request):
     if request.method == 'POST':
@@ -90,7 +92,8 @@ def nurse_view(request):
 @user_passes_test(is_pharmacist, login_url='unauthorized')
 def pharmacist_view(request):
     user = request.user
-    return render(request, 'PharmacistApp/pharmacy-dashboard.html', {'user': user})
+    medTypes = MedicineType.objects.all()
+    return render(request, 'PharmacistApp/pharmacy-dashboard.html', {'user': user, "medTypes": medTypes, "today_date":today_date})
 
 @login_required
 @user_passes_test(is_receptionist, login_url='unauthorized')

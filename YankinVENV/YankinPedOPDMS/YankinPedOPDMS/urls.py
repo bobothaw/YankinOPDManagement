@@ -35,6 +35,7 @@ urlpatterns = [
     path('receptionist/', receptionist_view, name = 'receptionist_dashboard'),
     path('ReceptionApp/', include('ReceptionApp.urls')),
     path('NurseApp/', include('NurseApp.urls')),
+    path('PharmacistApp/', include('PharmacistApp.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

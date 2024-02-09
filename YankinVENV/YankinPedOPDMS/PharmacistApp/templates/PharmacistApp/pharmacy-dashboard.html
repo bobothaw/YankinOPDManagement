@@ -5,7 +5,59 @@
 {% endblock navbar %}
 
 {% block content %}
-<h5 class="card-title fw-semibold mb-4">Pharmacy Page</h5>
-<p class="mb-0">In development Pharmacy Page</p>
-<p>{{user.FirstName}}</p>
+{% if error_message %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Oh noo, {{user.first_name}} {{user.last_name}}. {{error_message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+{% if success_message %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success: </strong> {{success_message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+
+<h5 class="card-title fw-semibold mb-4 text-center">Add Medicines in the Pharmacy Inventory</h5>
+<form method ="post", action = "{% url "medicineadd" %}">
+    {% csrf_token %}
+     <div class="mb-3">
+      <label for="medName" class="form-label">Medicine Name</label>
+      <input type="text" class="form-control" id="medName" aria-describedby="emailHelp" name = "medName" required required>
+    </div>
+    <div class="mb-3">
+      <label for="dob" class="form-label">Medicine Type</label>
+      <select class="form-select" aria-label="Default select example" name="medType" required>
+        <option selected>Open this select menu</option>
+        {% for medType in medTypes %}
+        <option value="{{medType.id}}">{{medType.name}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="mb-3">
+        <label for="dosage" class="form-label">Medicine's Standard Dosage</label>
+        <input type="number" class="form-control" id="dosage" name="dosage" required>
+    </div>
+    <div class="mb-3">
+        <label for="unit" class="form-label">Unit of Dosage (eg. mg, ml)</label>
+        <input type="text" class="form-control" id="unit" aria-describedby="emailHelp" name = "unit" step=".01" required>
+    </div>
+    <div class="mb-3">
+        <label for="stock" class="form-label">Stock in Inventory</label>
+        <input type="text" class="form-control" id="stock" aria-describedby="emailHelp" name = "stock" step=".5" required min="1">
+    </div>
+    <div class="mb-3">
+        <label for="expd" class="form-label">Expiry Date</label>
+        <input type="date" class="form-control" id="expd" min = "{{today_date}}" name = "expd" required>
+    </div>
+    <div class="mb-3">
+        <label for="manufac" class="form-label">Manufacturer</label>
+        <input type="text" class="form-control" id="manufac" aria-describedby="emailHelp" name = "manufacturer" required>
+    </div>
+    <div class="mb-3">
+      <label for="price_per_unit" class="form-label">Price Per Unit</label>
+      <input type="number" class="form-control" id="price_per_unit" aria-describedby="emailHelp" name = "price_per_unit" required step="0.1">
+    </div>
+    <button type="submit" class="btn btn-primary col-12">Add to Inventory</button>
+  </form>
 {% endblock content %}
