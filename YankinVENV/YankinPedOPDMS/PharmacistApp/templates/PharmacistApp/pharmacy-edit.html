@@ -1,0 +1,47 @@
+{% extends "PharmacistApp/pharmacy-dashboard.html" %}
+
+{% block editURL %}{% url "medicineEdit" medicine.id %}{% endblock editURL %}
+
+{% block medNameValue %}
+value = "{{medicine.name}}"
+{% endblock medNameValue %}
+
+{% block medTypeBlock %}
+    <option>Open this select menu</option>
+    {% for medType in medTypes %}
+    <option value="{{medType.id}}" {% if medType.name == medicine.type.name %}selected{% endif %}>{{medType.name}}</option>
+    {% endfor %}
+{% endblock medTypeBlock %}
+
+{% block dosageValue %}
+value = "{{medicine.dosage}}"
+{% endblock dosageValue %}
+
+{% block unitValue %}
+value = "{{medicine.unit}}"
+{% endblock unitValue %}
+
+
+{% block inventoryValue %}
+value = "{{medicine.stock}}"
+{% endblock inventoryValue %}
+
+
+{% block expiryValue %}
+value = "{{medicine.expiry_date|date:'Y-m-d'}}"
+{% endblock expiryValue %}
+
+
+{% block manufacturerValue %}
+value = "{{medicine.manufacturer}}"
+{% endblock manufacturerValue %}
+
+
+{% block priceValue %}
+value = "{{medicine.price_per_unit}}"
+{% endblock priceValue %}
+
+
+{% block buttonText %}
+Update Medicine Information
+{% endblock buttonText %}

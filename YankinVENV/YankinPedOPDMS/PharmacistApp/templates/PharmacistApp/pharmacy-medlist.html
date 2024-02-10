@@ -5,7 +5,7 @@
 {% endblock navbar %}
 
 {% block content %}
-
+{% include "PharmacistApp/pharmacy-searchbar.html" %}
 {% if error_message %}
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
         Oh noo, {{user.first_name}} {{user.last_name}}. {{error_message}}
@@ -19,7 +19,7 @@
     </div>
 {% endif %}
 {% if medicines|length > 0 %}
-{% include "PharmacistApp/pharmacy-searchbar.html" %}
+
 <div class="table-responsive mb-3">
     <table class="table">
         <thead>
@@ -38,7 +38,7 @@
             {% for medicine in medicines %}
                 <tr>
                     <td>{{medicine.name}}</td>
-                    <td>{{medicine.medicinetype.name}}</td>
+                    <td>{{medicine.type.name}}</td>
                     <td>{{medicine.dosage}} {{medicine.unit}}</td>
                     <td>{{medicine.stock}}</td>
                     {% load custom_filters %}
@@ -54,7 +54,7 @@
                     <td>{{medicine.manufacturer}}</td>
                     <td>{{medicine.price_per_unit}}</td>
                     <td>
-                        <a href="">Edit</a>
+                        <a href="{% url "medicineEdit" medicine.id %}">Edit</a>
                     </td>
                 </tr>
             {% endfor %}

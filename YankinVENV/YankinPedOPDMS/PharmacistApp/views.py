@@ -51,3 +51,31 @@ def medicine_list(request):
 
     return render(request, 'PharmacistApp/pharmacy-medlist.html', {'MEDIA_URL': settings.MEDIA_URL, 'medicines':medicines, 'user':user})
 
+
+def medicine_edit(request, medicineID):
+    user = request.user
+    medcines_list = Medicine.objects.all()
+    paginator = Paginator(medcines_list, 10)
+    medicines = paginator.get_page(request.GET.get('page', 1))
+    medicine = get_object_or_404(Medicine, pk=medicineID)
+    medTypes = MedicineType.objects.all()
+    if request.method == 'POST':
+        try:
+            medicine.name = request.POST.get('medName')
+            medicine.typeid = request.POST.get('medType')
+            medicine.type = get_object_or_404(MedicineType, pk=medicine.typeid)
+            medicine.dosage = request.POST.get('dosage')
+            medicine.unit = request.POST.get('unit')
+            medicine.stock = request.POST.get('stock')
+            medicine.expiry_date = request.POST.get('expd')
+            medicine.manufacturer = request.POST.get('manufacturer')
+            medicine.price_per_unit = request.POST.get('price_per_unit')
+            medicine.updated_by = user
+            medicine.save()
+            return render (request, 'PharmacistApp/pharmacy-medlist.html', {'MEDIA_URL': settings.MEDIA_URL, 'medicines':medicines, 'user':user, 'success_message': "The medicine information is updated successfully!"})
+        except Exception as e:
+            error_message = f"Error: {e}"
+            return render (request, 'PharmacistApp/pharmacy-medlist.html', {'MEDIA_URL': settings.MEDIA_URL, 'medicines':medicines, 'user':user, 'error_message': error_message})
+
+    return render (request, 'PharmacistApp/pharmacy-edit.html', {'MEDIA_URL': settings.MEDIA_URL, 'medicine':medicine, 'user':user, 'medTypes':medTypes})
+
