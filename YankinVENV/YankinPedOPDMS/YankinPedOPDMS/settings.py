@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'PharmacistApp',
     'ReceptionApp',
     'AdminApp',
-
 ]
 
 MIDDLEWARE = [
