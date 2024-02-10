@@ -40,14 +40,14 @@ def medicine_list(request):
     query = request.GET.get('medicineSearch', '')
 
     if query:
-        medicines_query_set = Medicine.object.filter(
+        medicines_query_set = Medicine.objects.filter(
             Q(name__icontains=query) |
-            Q(MedicineType__name__icontains=query) |
+            Q(type__name__icontains=query) |
             Q(manufacturer__icontains=query)
         )
         paginator = Paginator(medicines_query_set, 10)
         medicines = paginator.get_page(request.GET.get('page', 1))
-        return render(request, 'PharmacistApp/pharmacy-medlist.html',{'MEDIA_URL': settings.MEDIA_URL, 'medicines':medicines, 'user':user})
+        return render(request, 'PharmacistApp/pharmacy-medlist.html',{'MEDIA_URL': settings.MEDIA_URL, 'medicines':medicines, 'user':user, 'query':query})
 
     return render(request, 'PharmacistApp/pharmacy-medlist.html', {'MEDIA_URL': settings.MEDIA_URL, 'medicines':medicines, 'user':user})
 

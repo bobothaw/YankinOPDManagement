@@ -12,6 +12,6 @@ def calculate_age(birth_date):
 @register.filter
 def date_since(value):
     if isinstance(value, date):
-        delta = date.today() - value
+        delta = abs(date.today() - value)
         return delta.days
     return None

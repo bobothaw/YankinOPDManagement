@@ -42,11 +42,11 @@
                     <td>{{medicine.dosage}} {{medicine.unit}}</td>
                     <td>{{medicine.stock}}</td>
                     {% load custom_filters %}
-                    {% with exp_date=medicine.expiry_date|date_since %}
-                        {% if exp_date == 1 %}
-                            <td class="text-warning">Expires in {{ exp_date }} day</td>
-                        {% elif exp_date > 1 %}
-                            <td class="text-success">Expires in {{ exp_date }} days</td>
+                    {% with exp_date=medicine.expiry_date%}
+                        {% if exp_date|date_since == 1 %}
+                            <td class="text-warning">Expires in {{ exp_date|date_since }} day</td>
+                        {% elif exp_date|date_since > 1 %}
+                            <td class="text-success">Expires in {{ exp_date|date_since }} days</td>
                         {% else %}
                             <td class="text-danger">Expired!!</td>
                         {% endif %}
