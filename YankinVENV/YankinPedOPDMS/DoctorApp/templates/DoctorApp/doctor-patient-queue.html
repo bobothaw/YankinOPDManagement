@@ -1,12 +1,17 @@
-{% extends "common/base.html" %}
+{% extends "NurseApp/nurse-ready-list.html" %}
 
 {% block navbar %}
 {% include "DoctorApp/doctornav.html" %}
 {% endblock navbar %}
 
-{% block content %}
+{% block noDataText %}
+    The patients' vital signs are not recorded and not yet ready for consultation.
+{% endblock noDataText %}
 
-<h5 class="card-title fw-semibold mb-4">Doctor Page</h5>
-<p class="mb-0">In development Doctor Page</p>
-<p>{{user.FirstName}}</p>
-{% endblock content %}
+{% block linkText %}
+    Diagnose
+{% endblock linkText %}
+
+{% block urlText %}
+    {% url "nurseEdit" waitingItem.id %}
+{% endblock urlText %}
