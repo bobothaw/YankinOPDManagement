@@ -74,6 +74,7 @@ def is_receptionist(user):
 @user_passes_test(is_doctor, login_url='unauthorized')
 def doctor_view(request):
     user = request.user
+    
     return render(request, 'DoctorApp/doctor-patient-queue.html', {'user': user})
 
 @login_required

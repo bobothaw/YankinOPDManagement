@@ -1,0 +1,52 @@
+{% extends "common/base.html" %}
+
+{% block navbar %}
+{% include "DoctorApp/doctornav.html" %}
+{% endblock navbar %}
+
+{% block content %}
+<form method="post" action="{% block form_action %}{% url 'nurseRecord' waitingItem.id %}{% endblock %}">
+    {% csrf_token %}
+    <div class="card">
+      <div class=" p-3 text-primary text-center bg-light card-title">
+          {% block headerText %}Record Patient's Vital Signs here!!{% endblock headerText %} 
+      </div>
+      <div class="card-body">
+      <h5 class="card-title">Patient Name: {{waitingItem.patient.patient_name}}</h5>
+      <p class="card-text">
+          Gender: {{waitingItem.patient.gender}}
+      </p>
+      <p class="card-text">
+          Guardian: {{waitingItem.patient.guardian_name}}
+      </p>
+      <p class="card-text">
+          {% load custom_filters %}
+          {% with patient_dob=waitingItem.patient.date_of_birth %}
+              Age: {{ patient_dob|calculate_age }}
+          {% endwith %}
+      </p>
+      <div class="mb-3 row">
+        <label for="Temperature" class="col-sm-2 col-form-label">Temperature in °F: </label>
+        <div class="col-sm-10">
+          <input type="number" class="form-control" id="Temperature" step=".01" name="temp" min="80" max="110" required value="{{waitingItem.temperature}}">
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="Weight" class="col-sm-2 col-form-label">Body Weight in Kg: </label>
+        <div class="col-sm-10">
+          <input type="number" class="form-control" id="Weight" step=".01" name="weight" min="0.2" max="150" required value="{{waitingItem.weight}}">
+        </div>
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text">Blood Pressure: Systolic/Diastolic</span>
+        <input type="number" aria-label="Systolic Blood Pressure" class="form-control" step=".01" name="systole" min="40" max="200" required value="{{waitingItem.systole}}">
+        <input type="number" aria-label="Diastolic Blood Pressure" class="form-control" step=".01" name="diastole" min="20" max="140" required value="{{waitingItem.diastole}}"> 
+      </div>
+      <button type="submit" class="col-12 btn btn-primary">
+        {% block btnText %}Record{% endblock btnText %}  
+      </button>
+      </div>
+  </div>
+    
+</form>
+{% endblock content %}

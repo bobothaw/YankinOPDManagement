@@ -125,7 +125,9 @@ def patientEdit (request, patient_id):
 def queue_view(request, patient_id):
     user = request.user
     patient = get_object_or_404(Patient, pk=patient_id)
-    patients = Patient.objects.all()
+    patientsall = Patient.objects.all()
+    paginator = Paginator(patientsall, 10)
+    patients = paginator.get_page(request.GET.get('page', 1))
     try:
         newqueue = WaitingList(patient=patient, insert_by=user, last_edit_by=user)
         newqueue.save() 

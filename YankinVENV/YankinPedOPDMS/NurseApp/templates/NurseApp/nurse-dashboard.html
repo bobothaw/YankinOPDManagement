@@ -45,7 +45,7 @@
                     <small class="text-muted">Added {{waitingItem.queue_date_time|timesince}} ago.</small>
                 </p>
                 {% endblock vitalSigns %}
-                <a href="{% block urlText %}{% url "nurseRecord" waitingItem.id %}{% endblock urlText %}" class="btn btn-primary">
+                <a href="{% block urlText %}{% url "nurseRecord" waitingItem.id %}{% endblock urlText %}" class="btn btn-primary col-12">
                     {% block linkText %}Record{% endblock linkText %}                    
                 </a>
                 </div>
