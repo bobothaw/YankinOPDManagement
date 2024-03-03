@@ -27,9 +27,9 @@
             <input type="checkbox" class="form-check-input" id="admitCheck" name = "QueueCheck" value = "True">
             <label class="form-check-label" for="admitCheck">Admit the patient</label>
         </div>
-        <div class="mb-3 d-none" id="wardDiv">
+        <div class="mb-3" id="wardDiv">
             <label for="ward" class="form-label">Ward</label>
-            <input type="number" class="form-control" id="ward" name="ward" >
+            <input type="number" class="form-control" id="ward" name="ward">
         </div>
       <button type="submit" class="col-12 btn btn-primary">
         {% block btnText %}Diagnose{% endblock btnText %}  
@@ -39,20 +39,22 @@
     
 </form>
 <script>
-    var form = $('#diagform'),
-    checkbox = $('#admitCheck'),
-    chShipBlock = $('#wardDiv');
+    $(document).ready(function() {
+        var form = $('#diagform');
+        var checkbox = $('#admitCheck');
+        var chShipBlock = $('#wardDiv');
 
-    chShipBlock.hide();
-
-    checkbox.on('click', function() {
-    if($(this).is(':checked')) {
-        chShipBlock.show();
-        chShipBlock.find('input').attr('required', true);
-    } else {
         chShipBlock.hide();
-        chShipBlock.find('input').attr('required', false);
-    }
+
+        checkbox.on('click', function() {
+            if ($(this).is(':checked')) {
+                chShipBlock.show();
+                chShipBlock.find('input').prop('required', true);
+            } else {
+                chShipBlock.hide();
+                chShipBlock.find('input').prop('required', false);
+            }
+        });
     });
 </script>
 {% endblock content %}
