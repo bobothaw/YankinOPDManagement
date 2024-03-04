@@ -17,16 +17,15 @@ class Diagnosis(models.Model):
         return self.diagnosis_name
     
 class DiagnosisDetails(models.Model):
-    cheif_conplaint = models.CharField(max_length=500)
+    chief_conplaint = models.CharField(max_length=500)
     secondary_conplaint = models.CharField(max_length=200, null=True)
     physical_findings = models.CharField(max_length=500)
     test_results=models.CharField(max_length=200, null=True)
-    primary_diagnosis = models.ForeignKey(Diagnosis, on_delete=models.SET_NULL)
-    secondary_diagnosis = models.ForeignKey(Diagnosis, on_delete=models.SET_NULL)
-    waitingList = models.ForeignKey(WaitingList, on_delete=models.SET_NULL)
+    primary_diagnosis = models.ForeignKey(Diagnosis, related_name='primary_diagnosis_details', on_delete=models.SET_NULL, null=True)
+    secondary_diagnosis = models.ForeignKey(Diagnosis, related_name='secondary_diagnosis_details', on_delete=models.SET_NULL, null=True)
+    waitingList = models.ForeignKey(WaitingList, on_delete=models.SET_NULL, null=True)
     diagnosed_datetime = models.DateTimeField(auto_now_add=True)
-    diagnosedBy = models.ForeignKey(User, on_delete=models.SET_NULL)
-    updateBy = models.ForeignKey(User, on_delete=models.SET_NULL)
+    diagnosedBy = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.cheif_conplaint
@@ -38,15 +37,16 @@ class Admission(models.Model):
     def __str__(self):
         return self.admission_reason
 
+
 class PrescribedMedicine(models.Model):
-    diagnosisDetail = models.ForeignKey(DiagnosisDetails, on_delete=models.CASCADE)
-    medicine = models.ForeignKey(Medicine, on_delete=models.SET_NULL)
+    relatedDiagDetail = models.ForeignKey(DiagnosisDetails, on_delete=models.CASCADE)
+    medicine = models.ForeignKey(Medicine, on_delete=models.SET_NULL, null=True)
     quantity = models.DecimalField(max_digits=8, decimal_places=2)
     instruction = models.CharField(max_length=200)
-    approved_by = models.CharField(User, on_delete=models.SET_NULL, null=True)
+    approved_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return self.medicine
+        return self.instruction
 
 
 
