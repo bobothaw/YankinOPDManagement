@@ -24,6 +24,18 @@
             Systolic/Diastolic: {{waitingPatient.systole}}/{{waitingPatient.diastole}} mHg
         </p>
         <div class="mb-3 form-check">
+            <input type="text" placeholder="Chief Conplaint" id="chcon">
+            <label class="form-check-label" for="chcon">Chief Conplaint</label>
+        </div>
+        <div class="mb-3 form-check">
+            <input type="text" placeholder="Secondary Conplaint" id="seccon">
+            <label class="form-check-label" for="secon">Secondary Conplaint</label>
+        </div>
+        <div class="mb-3 form-check">
+            <input type="text" placeholder="Chief Conplaint" id="chcon">
+            <label class="form-check-label" for="admitChecchconk">Chief Conplaint</label>
+        </div>
+        <div class="mb-3 form-check">
             <input type="checkbox" class="form-check-input" id="admitCheck" name = "QueueCheck" value = "True">
             <label class="form-check-label" for="admitCheck">Admit the patient</label>
         </div>
@@ -31,9 +43,9 @@
             <label for="ward" class="form-label">Ward</label>
             <input type="number" class="form-control" id="ward" name="ward">
         </div>
-      <button type="submit" class="col-12 btn btn-primary">
-        {% block btnText %}Diagnose{% endblock btnText %}  
-      </button>
+        <button type="submit" class="col-12 btn btn-primary">
+            {% block btnText %}Diagnose{% endblock btnText %}  
+        </button>
       </div>
   </div>
     
@@ -50,7 +62,8 @@
             if ($(this).is(':checked')) {
                 chShipBlock.show();
                 chShipBlock.find('input').prop('required', true);
-            } else {
+            } 
+            else {
                 chShipBlock.hide();
                 chShipBlock.find('input').prop('required', false);
             }
