@@ -23,17 +23,35 @@
         <p class="card-text">
             Systolic/Diastolic: {{waitingPatient.systole}}/{{waitingPatient.diastole}} mHg
         </p>
-        <div class="mb-3 form-check">
-            <input type="text" placeholder="Chief Conplaint" id="chcon">
-            <label class="form-check-label" for="chcon">Chief Conplaint</label>
+        <div class="mb-3">
+            <label class="form-label" for="chcon">Chief Conplaint</label>
+            <input type="text" placeholder="Chief Conplaint of the patient" id="chcon" class="form-control">
         </div>
-        <div class="mb-3 form-check">
-            <input type="text" placeholder="Secondary Conplaint" id="seccon">
-            <label class="form-check-label" for="secon">Secondary Conplaint</label>
+        <div class="mb-3">
+            <label class="form-label" for="secon">Secondary Conplaint</label>
+            <input type="text" placeholder="Secondary Conplaint of the patient" id="seccon" class="form-control">
         </div>
-        <div class="mb-3 form-check">
-            <input type="text" placeholder="Chief Conplaint" id="chcon">
-            <label class="form-check-label" for="admitChecchconk">Chief Conplaint</label>
+        <div class="mb-3">
+            <label class="form-label" for="phyfind">Physical Findings</label>
+            <input type="text" placeholder="Input any physical findings Conplaint" id="phyfind" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="testresult">Test Results</label>
+            <input type="text" placeholder="Input test results if there are any" id="testresult" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="pridiag">Primary Diagnosis</label>
+            <select name="primaryDiag" id="pridiag">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <input type="text" placeholder="Chief Conplaint" id="chcon" class="form-control">
+            <label class="form-label" for="admitChecchconk">Secondary Diagnosis</label>
+        </div>
+        <div class="mb-3">
+            <input type="text" placeholder="Chief Conplaint" id="chcon" class="form-control">
+            <label class="form-label" for="admitChecchconk">Primary Diagnosis</label>
         </div>
         <div class="mb-3 form-check">
             <input type="checkbox" class="form-check-input" id="admitCheck" name = "QueueCheck" value = "True">
