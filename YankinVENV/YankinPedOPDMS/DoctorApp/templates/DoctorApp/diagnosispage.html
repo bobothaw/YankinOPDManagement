@@ -41,17 +41,21 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="pridiag">Primary Diagnosis</label>
-            <select name="primaryDiag" id="pridiag">
-                <option value=""></option>
+            <select name="primaryDiag" id="pridiag" required>
+                <option value="">Select a suitable diagnosis</option>
+                {% for diagitem in diaglist %}
+                    <option value="{{diagitem.id}}">{{diagitem.diagnosis_name}}</option>
+                {% endfor %}
             </select>
         </div>
         <div class="mb-3">
-            <input type="text" placeholder="Chief Conplaint" id="chcon" class="form-control">
-            <label class="form-label" for="admitChecchconk">Secondary Diagnosis</label>
-        </div>
-        <div class="mb-3">
-            <input type="text" placeholder="Chief Conplaint" id="chcon" class="form-control">
-            <label class="form-label" for="admitChecchconk">Primary Diagnosis</label>
+            <label class="form-label" for="secdiag">Secondary Diagnosis</label>
+            <select name="secondaryDiag" id="secdiag" required>
+                <option value="">Select a suitable diagnosis</option>
+                {% for diagitem in diaglist %}
+                    <option value="{{diagitem.id}}">{{diagitem.diagnosis_name}}</option>
+                {% endfor %}
+            </select>
         </div>
         <div class="mb-3 form-check">
             <input type="checkbox" class="form-check-input" id="admitCheck" name = "QueueCheck" value = "True">
@@ -59,7 +63,12 @@
         </div>
         <div class="mb-3" id="wardDiv">
             <label for="ward" class="form-label">Ward</label>
-            <input type="number" class="form-control" id="ward" name="ward">
+            <select name="ward" id="ward" required>
+                <option value="">Select a ward</option>
+                {% for ward in wards %}
+                    <option value="{{ward.id}}">{{ward.ward_name}}</option>
+                {% endfor %}
+            </select>
         </div>
         <button type="submit" class="col-12 btn btn-primary">
             {% block btnText %}Diagnose{% endblock btnText %}  
