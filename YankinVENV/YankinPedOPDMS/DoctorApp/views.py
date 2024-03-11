@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 from datetime import date
 from .models import Diagnosis, Ward
+from PharmacistApp.models import Medicine
 
 
 # Create your views here.
@@ -28,12 +29,15 @@ def diagnosisView(request, waitingID):
     waitingPatient = get_object_or_404(WaitingList, pk=waitingID)
     diaglist = Diagnosis.objects.all()
     wards = Ward.objects.all()
+    medicines = Medicine.objects.all()
+
     context = {
         'waitingPatient': waitingPatient,
         'user':user,
         'MEDIA_URL': settings.MEDIA_URL,
         'diaglist': diaglist,
         'wards': wards,
+        'medicines':medicines,
     }
     return render(request, 'DoctorApp/diagnosispage.html', context)
 

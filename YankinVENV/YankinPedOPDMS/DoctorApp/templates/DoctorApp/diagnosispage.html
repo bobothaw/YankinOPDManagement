@@ -52,7 +52,7 @@
             <label class="form-label" for="secdiag">Secondary Diagnosis</label>
             <select name="secondaryDiag" id="secdiag" class="form-select" required>
                 <option value="">Select a suitable diagnosis</option>
-                {% for diagitem in diaglist %}  ``
+                {% for diagitem in diaglist %} 
                     <option value="{{diagitem.id}}">{{diagitem.diagnosis_name}}</option>
                 {% endfor %}
             </select>
