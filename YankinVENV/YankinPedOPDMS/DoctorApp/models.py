@@ -25,7 +25,9 @@ class DiagnosisDetails(models.Model):
     secondary_diagnosis = models.ForeignKey(Diagnosis, related_name='secondary_diagnosis_details', on_delete=models.SET_NULL, null=True)
     waitingList = models.ForeignKey(WaitingList, on_delete=models.SET_NULL, null=True)
     diagnosed_datetime = models.DateTimeField(auto_now_add=True)
-    diagnosedBy = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    diagnosedBy = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name = 'diagnosisdoctor')
+    is_prescription_denied = models.BooleanField(null=True, blank=True)
+    prescription_approved_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name = 'approvepharmacist')
 
     def __str__(self):
         return self.cheif_conplaint
@@ -43,7 +45,6 @@ class PrescribedMedicine(models.Model):
     medicine = models.ForeignKey(Medicine, on_delete=models.SET_NULL, null=True)
     quantity = models.DecimalField(max_digits=8, decimal_places=2)
     instruction = models.CharField(max_length=200)
-    approved_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.instruction

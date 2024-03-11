@@ -5,7 +5,7 @@
 {% endblock navbar %}
 
 {% block content %}
-<form method="post" action="{% block form_action %}{% endblock %}" id="diagform">
+<form method="post" action="{% url "diagnoserecord" waitingPatient.id %}" id="diagform">
     {% csrf_token %}
     <div class="card">
       <div class=" p-3 text-primary text-center bg-light card-title">
@@ -25,19 +25,19 @@
         </p>
         <div class="mb-3">
             <label class="form-label" for="chcon">Chief Conplaint</label>
-            <input type="text" placeholder="Chief Conplaint of the patient" id="chcon" class="form-control">
+            <input type="text" placeholder="Chief Conplaint of the patient" id="chcon" class="form-control" name="cheifCon">
         </div>
         <div class="mb-3">
             <label class="form-label" for="secon">Secondary Conplaint</label>
-            <input type="text" placeholder="Secondary Conplaint of the patient" id="seccon" class="form-control">
+            <input type="text" placeholder="Secondary Conplaint of the patient" id="seccon" class="form-control" name="secCon">
         </div>
         <div class="mb-3">
             <label class="form-label" for="phyfind">Physical Findings</label>
-            <input type="text" placeholder="Input any physical findings Conplaint" id="phyfind" class="form-control">
+            <input type="text" placeholder="Input any physical findings Conplaint" id="phyfind" class="form-control" name="phyFind">
         </div>
         <div class="mb-3">
             <label class="form-label" for="testresult">Test Results</label>
-            <input type="text" placeholder="Input test results if there are any" id="testresult" class="form-control">
+            <input type="text" placeholder="Input test results if there are any" id="testresult" class="form-control" name="testResult">
         </div>
         <div class="mb-3">
             <label class="form-label" for="pridiag">Primary Diagnosis</label>
@@ -57,14 +57,45 @@
                 {% endfor %}
             </select>
         </div>
+        <div id="prescription-fields">
+            <h6>Prescribe Medicines Here!!</h6>
+            
+            <div class="mb-5 prescription-field">
+                <div class="input-group">
+                    <label for="" class="input-group-text">Medicine</label>
+                    <select name="prescription[]" class="form-select">
+                        <option value="">Select a medicine</option>
+                        {% for medicine in medicines %}
+                            <option value="{{medicine.id}}">{{medicine.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="number" name="quantity[]" class="form-control">
+                    <label for="" class="input-group-text">Unit Example</label>
+                </div>
+                <label for="" class="form-label">Instruction</label>
+                <input type="text" name="instruction[]" class="form-control">
+            </div>
+        </div>
+        <div class="row justify-content-end">
+            <div class="col-auto">
+                <button type="button" id="add-prescription" class="btn btn-success mb-3">Add another medicine</button>
+            </div>
+        </div>
         <div class="mb-3" id="wardDiv">
-            <label for="ward" class="form-label">Ward</label>
-            <select name="ward" id="ward" class="form-select" required>
-                <option value="">Select a ward</option>
-                {% for ward in wards %}
-                    <option value="{{ward.id}}">{{ward.ward_name}}</option>
-                {% endfor %}
-            </select>
+
+            <div class="mb-3">
+                <label for="ward" class="form-label">Ward</label>
+                <select name="ward" id="ward" class="form-select" required>
+                    <option value="">Select a ward</option>
+                    {% for ward in wards %}
+                        <option value="{{ward.id}}">{{ward.ward_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="ward" class="form-label">Admission Reason</label>
+                <input type="text" name="admit-reason" class="form-control">
+            </div>
         </div>
         <div class="mb-3 form-check">
             <input type="checkbox" class="form-check-input" id="admitCheck" name = "QueueCheck" value = "True">
@@ -95,6 +126,11 @@
                 chShipBlock.find('input').prop('required', false);
             }
         });
+        $('#add-prescription').on('click', function() {
+            var clone = $('.prescription-field').first().clone();
+            $('#prescription-fields').append(clone);
+        });
+
     });
 </script>
 {% endblock content %}
