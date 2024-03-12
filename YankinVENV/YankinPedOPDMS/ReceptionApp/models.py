@@ -30,6 +30,7 @@ class WaitingList(models.Model):
     systole = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     diastole = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     isReady = models.BooleanField(default=False)
+    isDiagnosed=models.BooleanField(default=False)
     insert_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='waiting_lists_inserted')
     last_edit_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='waiting_lists_last_edited')
 

@@ -4,7 +4,7 @@ from ReceptionApp.models import WaitingList
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 from datetime import date
-from .models import Diagnosis, Ward, PrescribedMedicine, DiagnosisDetails
+from .models import Diagnosis, Ward, PrescribedMedicine, DiagnosisDetails, Admission
 from PharmacistApp.models import Medicine
 
 
@@ -12,7 +12,7 @@ from PharmacistApp.models import Medicine
 @login_required
 def docPatQueueView(request):
     user = request.user
-    waitingListQuery = WaitingList.objects.filter(consult_date = date.today(), isReady = True).order_by('queue_date_time')
+    waitingListQuery = WaitingList.objects.filter(consult_date = date.today(), isReady = True, isDiagnosed = False).order_by('queue_date_time')
     paginator = Paginator(waitingListQuery, 10)
     waitingLists = paginator.get_page(request.GET.get('page', 1))
     context = {
@@ -44,7 +44,7 @@ def diagnosisView(request, waitingID):
 @login_required
 def diagnosisRecord(request, waitingID):
     user = request.user
-    waitingListQuery = WaitingList.objects.filter(consult_date = date.today(), isReady = True).order_by('queue_date_time')
+    waitingListQuery = WaitingList.objects.filter(consult_date = date.today(), isReady = True, isDiagnosed = False).order_by('queue_date_time')
     paginator = Paginator(waitingListQuery, 10)
     waitingLists = paginator.get_page(request.GET.get('page', 1))
     try:
@@ -67,6 +67,8 @@ def diagnosisRecord(request, waitingID):
                 waitingList=waitingList, 
                 diagnosedBy=diagnosedBy)
             newDiagDetail.save()
+            waitingList.isDiagnosed = True
+            waitingList.save()
             medicines = request.POST.getlist('prescription[]')
             quantities = request.POST.getlist('quantity[]')
             instructions = request.POST.getlist('instruction[]')
@@ -79,6 +81,15 @@ def diagnosisRecord(request, waitingID):
                     instruction=instruction
                 )
                 newPrescribedMedicine.save()
+
+            if request.POST.get('admitCheck') == 'True':
+                newAdmission = Admission(
+                    admission_reason=request.POST.get('admit-reason'),
+                    admitted_ward = get_object_or_404(Ward, pk=request.POST.get('ward')),
+                    related_diag_detail=newDiagDetail
+                    )
+                newAdmission.save()
+
             context = {
                 'waitingLists': waitingLists,
                 'user':user,

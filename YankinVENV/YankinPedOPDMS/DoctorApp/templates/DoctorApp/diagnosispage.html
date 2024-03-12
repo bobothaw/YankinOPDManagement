@@ -85,7 +85,7 @@
 
             <div class="mb-3">
                 <label for="ward" class="form-label">Ward</label>
-                <select name="ward" id="ward" class="form-select" required>
+                <select name="ward" id="ward" class="form-select">
                     <option value="">Select a ward</option>
                     {% for ward in wards %}
                         <option value="{{ward.id}}">{{ward.ward_name}}</option>
@@ -98,11 +98,11 @@
             </div>
         </div>
         <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="admitCheck" name = "QueueCheck" value = "True">
+            <input type="checkbox" class="form-check-input" id="admitCheck" name = "admitCheck" value = "True">
             <label class="form-check-label" for="admitCheck">Admit the patient</label>
         </div>
         <button type="submit" class="col-12 btn btn-primary">
-            {% block btnText %}Diagnose{% endblock btnText %}  
+            {% block btnText %}Diagnose{% endblock btnText %}
         </button>
       </div>
   </div>
@@ -113,17 +113,16 @@
         var form = $('#diagform');
         var checkbox = $('#admitCheck');
         var chShipBlock = $('#wardDiv');
-
         chShipBlock.hide();
 
         checkbox.on('click', function() {
             if ($(this).is(':checked')) {
                 chShipBlock.show();
-                chShipBlock.find('input').prop('required', true);
+                chShipBlock.find('input, select').prop('required', true);
             } 
             else {
                 chShipBlock.hide();
-                chShipBlock.find('input').prop('required', false);
+                cchShipBlock.find('input, select').prop('required', false);
             }
         });
         $('#add-prescription').on('click', function() {

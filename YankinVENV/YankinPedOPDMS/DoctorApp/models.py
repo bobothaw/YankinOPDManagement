@@ -35,6 +35,7 @@ class DiagnosisDetails(models.Model):
 class Admission(models.Model):
     admission_reason = models.CharField(max_length=300)
     admitted_ward = models.ForeignKey(Ward, on_delete=models.CASCADE)
+    related_diag_detail = models.ForeignKey(DiagnosisDetails, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.admission_reason
