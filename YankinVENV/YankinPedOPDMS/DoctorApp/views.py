@@ -67,8 +67,6 @@ def diagnosisRecord(request, waitingID):
                 waitingList=waitingList, 
                 diagnosedBy=diagnosedBy)
             newDiagDetail.save()
-            waitingList.isDiagnosed = True
-            waitingList.save()
             medicines = request.POST.getlist('prescription[]')
             quantities = request.POST.getlist('quantity[]')
             instructions = request.POST.getlist('instruction[]')
@@ -89,7 +87,8 @@ def diagnosisRecord(request, waitingID):
                     related_diag_detail=newDiagDetail
                     )
                 newAdmission.save()
-
+            waitingList.isDiagnosed = True
+            waitingList.save()
             context = {
                 'waitingLists': waitingLists,
                 'user':user,

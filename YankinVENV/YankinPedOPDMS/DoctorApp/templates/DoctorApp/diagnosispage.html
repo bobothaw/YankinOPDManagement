@@ -12,7 +12,7 @@
           {% block headerText %}Diagnosis page for {{waitingPatient.patient.patient_name}} {% endblock headerText %} 
       </div>
       <div class="card-body">
-      <h5 class="card-title">Patient Name: {{waitingPatient.patient.patient_name}}</h5>
+      <h5 class="card-title">Patient Name:{{waitingPatient.patient.patient_name}}</h5>
       
         <p class="card-text">
             Temperature: {{waitingPatient.temperature}}°F
@@ -63,22 +63,25 @@
             <div class="mb-5 prescription-field">
                 <div class="input-group">
                     <label for="" class="input-group-text">Medicine</label>
-                    <select name="prescription[]" class="form-select">
+                    <select name="prescription[]" class="form-select" required>
                         <option value="">Select a medicine</option>
                         {% for medicine in medicines %}
                             <option value="{{medicine.id}}">{{medicine.name}}</option>
                         {% endfor %}
                     </select>
-                    <input type="number" name="quantity[]" class="form-control">
+                    <input type="number" name="quantity[]" class="form-control" required>
                     <label for="" class="input-group-text">Unit Example</label>
                 </div>
                 <label for="" class="form-label">Instruction</label>
-                <input type="text" name="instruction[]" class="form-control">
+                <input type="text" name="instruction[]" class="form-control" required>
             </div>
         </div>
         <div class="row justify-content-end">
             <div class="col-auto">
                 <button type="button" id="add-prescription" class="btn btn-success mb-3">Add another medicine</button>
+            </div>
+            <div class="col-auto">
+                <button type="button" id="delete-prescription" class="btn btn-danger mb-3" disabled>Undo medicine</button>
             </div>
         </div>
         <div class="mb-3" id="wardDiv">
@@ -126,10 +129,22 @@
             }
         });
         $('#add-prescription').on('click', function() {
-            var clone = $('.prescription-field').first().clone();
+            var clone = $('.prescription-field').first().clone(false);
+            clone.find('input[type="number"]').val(''); // Clear input values
+            clone.find('input[type="text"]').val('');   // Clear input values
             $('#prescription-fields').append(clone);
+            updateDeleteButtonState();
+        });
+        
+        $('#delete-prescription').on('click', function() {
+            $('#prescription-fields').children().last().remove(); // Remove the last added medicine field
+            updateDeleteButtonState();
         });
 
+        function updateDeleteButtonState() {
+            var numMedicines = $('#prescription-fields').children('.prescription-field').length;
+            $('#delete-prescription').prop('disabled', numMedicines <= 1); // Disable delete button if only one medicine field remains
+        }
     });
 </script>
 {% endblock content %}
