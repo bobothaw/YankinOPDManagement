@@ -25,26 +25,26 @@
         </p>
         <div class="mb-3">
             <label class="form-label" for="chcon">Chief Conplaint</label>
-            <input type="text" placeholder="Chief Conplaint of the patient" id="chcon" class="form-control" name="cheifCon">
+            <input type="text" placeholder="Chief Conplaint of the patient" id="chcon" class="form-control" name="cheifCon" value="{{diagnosis.chief_conplaint}}">
         </div>
         <div class="mb-3">
             <label class="form-label" for="secon">Secondary Conplaint</label>
-            <input type="text" placeholder="Secondary Conplaint of the patient" id="seccon" class="form-control" name="secCon">
+            <input type="text" placeholder="Secondary Conplaint of the patient" id="seccon" class="form-control" name="secCon" value="{{diagnosis.secondary_conplaint}}">
         </div>
         <div class="mb-3">
             <label class="form-label" for="phyfind">Physical Findings</label>
-            <input type="text" placeholder="Input any physical findings Conplaint" id="phyfind" class="form-control" name="phyFind">
+            <input type="text" placeholder="Input any physical findings Conplaint" id="phyfind" class="form-control" name="phyFind" value="{{diagnosis.physical_findings}}">
         </div>
         <div class="mb-3">
             <label class="form-label" for="testresult">Test Results</label>
-            <input type="text" placeholder="Input test results if there are any" id="testresult" class="form-control" name="testResult">
+            <input type="text" placeholder="Input test results if there are any" id="testresult" class="form-control" name="testResult" value="{{diagnosis.test_results}}">
         </div>
         <div class="mb-3">
             <label class="form-label" for="pridiag">Primary Diagnosis</label>
             <select name="primaryDiag" id="pridiag" class="form-select" required>
                 <option value="">Select a suitable diagnosis</option>
                 {% for diagitem in diaglist %}
-                    <option value="{{diagitem.id}}">{{diagitem.diagnosis_name}}</option>
+                    <option value="{{diagitem.id}}" {% if diagnosis.primary_diagnosis.id==diagitem.id %}selected{% endif %}>{{diagitem.diagnosis_name}}</option>
                 {% endfor %}
             </select>
         </div>
@@ -53,7 +53,7 @@
             <select name="secondaryDiag" id="secdiag" class="form-select" required>
                 <option value="">Select a suitable diagnosis</option>
                 {% for diagitem in diaglist %} 
-                    <option value="{{diagitem.id}}">{{diagitem.diagnosis_name}}</option>
+                    <option value="{{diagitem.id}}" {% if diagnosis.secondary_diagnosis.id==diagitem.id %}selected{% endif %}>{{diagitem.diagnosis_name}}</option>
                 {% endfor %}
             </select>
         </div>

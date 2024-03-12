@@ -114,7 +114,12 @@ def diagnosisEdit(request, waitingID):
 @login_required
 def diagnosisHistoryView (request):
     user = request.user
-    diagnosisQuery = DiagnosisDetails.objects.filter(waitingList.consult_date = date.today(), )
-    waitingListQuery = WaitingList.objects.filter(consult_date = date.today(), isReady = True, isDiagnosed = True).order_by('queue_date_time')
-    paginator = Paginator(waitingListQuery, 10)
-    waitingLists = paginator.get_page(request.GET.get('page', 1))
+    diagnosisQuery = DiagnosisDetails.objects.filter(waitingList__consult_date = date.today(), waitingList__isDiagnosed = False).order_by('diagnosed_datetime')
+    paginator = Paginator(diagnosisQuery, 10)
+    diagnosisLists = paginator.get_page(request.GET.get('page', 1))
+
+    context = {
+        'diagnosisLists':diagnosisLists,
+        'user':user,
+        'MEDIA_URL': settings.MEDIA_URL,
+    }

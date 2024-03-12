@@ -5,15 +5,18 @@
 {% endblock navbar %}
 
 {% block noDataText %}
-    The patients' vital signs are not recorded and not yet ready for consultation.
+    You have not diagnosed any patients for today.
 {% endblock noDataText %}
 
 {% block linkText %}
-    Diagnose
+    Edit Diagnosis
 {% endblock linkText %}
 
 {% block urlText %}
     {% url "diagnose" waitingItem.id %}
 {% endblock urlText %}
 
+{% block content %}
 
+
+{% endblock content %}
