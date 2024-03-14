@@ -112,8 +112,11 @@ def diagnosisEdit(request, diagnosisID):
     wards = Ward.objects.all()
     medicines = Medicine.objects.all()
     diagnosis = get_object_or_404(DiagnosisDetails, pk=diagnosisID)
+    waitingID = diagnosis.waitingList
+    waitingPatient = get_object_or_404(WaitingList, pk=waitingID)
     prescribedmedicines = PrescribedMedicine.objects.filter(relatedDiagDetail=diagnosisID)
     admission = Admission.objects.filter(related_diag_detail=diagnosisID)
+    diaglist = Diagnosis.objects.all()
     context = {
         'user':user,
         'MEDIA_URL': settings.MEDIA_URL,
@@ -122,21 +125,23 @@ def diagnosisEdit(request, diagnosisID):
         'prescribedmedicines':prescribedmedicines,
         'admission':admission,
         'diagnosis':diagnosis,
+        'diaglist': diaglist,
+        'waitingPatient': waitingPatient,
     }
     return render(request, 'DoctorApp/diagnosisedit.html', context)
 
 @login_required
 def diagnosisHistoryView (request):
     user = request.user
-    diagnosisQuery = DiagnosisDetails.objects.filter(waitingList__consult_date = date.today(), waitingList__isDiagnosed = False).order_by('diagnosed_datetime')
+    diagnosisQuery = DiagnosisDetails.objects.filter(
+        waitingList__consult_date = date.today(),
+        waitingList__isDiagnosed = True,
+    ).order_by('diagnosed_datetime')
     paginator = Paginator(diagnosisQuery, 10)
     diagnosisLists = paginator.get_page(request.GET.get('page', 1))
-    
-    
     context = {
         'diagnosisLists':diagnosisLists,
         'user':user,
         'MEDIA_URL': settings.MEDIA_URL,
     }
-    return render(request, 'DoctorApp/diagnosisedit.html', context)
-
+    return render(request, 'DoctorApp/diagnosed-queue.html', context)

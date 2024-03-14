@@ -44,7 +44,7 @@
             <select name="primaryDiag" id="pridiag" class="form-select" required>
                 <option value="">Select a suitable diagnosis</option>
                 {% for diagitem in diaglist %}
-                    <option value="{{diagitem.id}}" {% if diagnosis.primary_diagnosis.id==diagitem.id %}selected{% endif %}>{{diagitem.diagnosis_name}}</option>
+                    <option value="{{diagitem.id}}" {% if diagnosis.primary_diagnosis.id == diagitem.id %}selected{% endif %}>{{diagitem.diagnosis_name}}</option>
                 {% endfor %}
             </select>
         </div>
@@ -53,7 +53,7 @@
             <select name="secondaryDiag" id="secdiag" class="form-select" required>
                 <option value="">Select a suitable diagnosis</option>
                 {% for diagitem in diaglist %} 
-                    <option value="{{diagitem.id}}" {% if diagnosis.secondary_diagnosis.id==diagitem.id %}selected{% endif %}>{{diagitem.diagnosis_name}}</option>
+                    <option value="{{diagitem.id}}" {% if diagnosis.secondary_diagnosis.id == diagitem.id %}selected{% endif %}>{{diagitem.diagnosis_name}}</option>
                 {% endfor %}
             </select>
         </div>

@@ -76,21 +76,24 @@
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">DOB</th>
-            <th scope="col">Gender</th>
-            <th scope="col">NRC</th>
-            <th scope="col">Father</th>
-            <th scope="col">Mother</th>
-            <th scope="col">Guardian</th>
-            <th scope="col">Relationship</th>
-            <th scope="col">Address</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Queue</th>
+            {% block tableHeading %}
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">DOB</th>
+                <th scope="col">Gender</th>
+                <th scope="col">NRC</th>
+                <th scope="col">Father</th>
+                <th scope="col">Mother</th>
+                <th scope="col">Guardian</th>
+                <th scope="col">Relationship</th>
+                <th scope="col">Address</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Queue</th>
+            {% endblock tableHeading %}
         </tr>
         </thead>
         <tbody class="table-group-divider">
+            {% block tableContent %}    
             {% for patient in patients %}
                 <tr>
                     <th scope="row">{{patient.id}}</th>
@@ -111,11 +114,13 @@
                     </td>
                 </tr>
             {% endfor %}
+            {% endblock tableContent %}
         </tbody>
     </table>
 </div>
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
+        {% block pagination %}
         {% if patients.has_previous %}
             <li class="page-item">
                 <a class="page-link" href="?page=1{% if query %}&patientSearch={{ query }}{% endif %}" aria-label="First">
@@ -147,6 +152,7 @@
                 </a>
             </li>
         {% endif %}
+        {% endblock pagination %}
     </ul>
     
 </nav>

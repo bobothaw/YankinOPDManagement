@@ -1,7 +1,7 @@
 {% extends "DoctorApp/diagnosispage.html" %}
 
 {% block diagURL %}
-{% url "" %}
+{% url "diagnosisedit" diagnosis.id %}
 {% endblock diagURL %}
 
 {% block prescriptionField %}
@@ -15,11 +15,11 @@
                         <option value="{{medicine.id}}"{% if medicine.id == prescribedmedicine.medicine.id %}selected{% endif %}>{{medicine.name}}</option>
                     {% endfor %}
                 </select>
-                <input type="number" name="quantity[]" class="form-control" required value="prescribedmedicine.quantity">
+                <input type="number" name="quantity[]" class="form-control" required value="{{prescribedmedicine.quantity}}">
                 <label for="" class="input-group-text">Unit Example</label>
             </div>
             <label for="" class="form-label">Instruction</label>
-            <input type="text" name="instruction[]" class="form-control" required value="prescribedmedicine.instruction">
+            <input type="text" name="instruction[]" class="form-control" required value="{{prescribedmedicine.instruction}}">
         </div>
     {% endfor %}
 {% endblock prescriptionField %}
@@ -31,13 +31,13 @@
         <select name="ward" id="ward" class="form-select">
             <option value="">Select a ward</option>
             {% for ward in wards %}
-                <option value="{{ward.id}}" {% if ward.id==admission.admitted_ward.id %}selected{% endif %}>{{ward.ward_name}}</option>
+                <option value="{{ward.id}}" {% if ward.id == admission.admitted_ward.id %}selected{% endif %}>{{ward.ward_name}}</option>
             {% endfor %}
         </select>
     </div>
     <div>
         <label for="ward" class="form-label">Admission Reason</label>
-        <input type="text" name="admit-reason" class="form-control" value="admission.admission_reason">
+        <input type="text" name="admit-reason" class="form-control" value="{{admission.admission_reason}}">
     </div>
 </div>
 <div class="mb-3 form-check">
