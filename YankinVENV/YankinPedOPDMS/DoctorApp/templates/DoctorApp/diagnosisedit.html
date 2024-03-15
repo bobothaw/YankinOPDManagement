@@ -1,7 +1,7 @@
 {% extends "DoctorApp/diagnosispage.html" %}
 
 {% block diagURL %}
-{% url "diagnosisedit" diagnosis.id %}
+{% url "diagUpdate" diagnosis.id %}
 {% endblock diagURL %}
 
 {% block prescriptionField %}
@@ -51,6 +51,5 @@
 {% if admission %}
     {% block warddisplay %}
     chShipBlock.show();
-    alert("admission is here")
     {% endblock warddisplay %}
 {% endif %}

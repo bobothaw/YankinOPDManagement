@@ -146,3 +146,59 @@ def diagnosisHistoryView (request):
         'MEDIA_URL': settings.MEDIA_URL,
     }
     return render(request, 'DoctorApp/diagnosed-queue.html', context)
+
+def diagnosisUpdate(request, diagnosisID):
+    user = request.user
+    diagnosisQuery = DiagnosisDetails.objects.filter(
+        waitingList__consult_date = date.today(),
+        waitingList__isDiagnosed = True,
+    ).order_by('diagnosed_datetime')
+    paginator = Paginator(diagnosisQuery, 10)
+    diagnosisLists = paginator.get_page(request.GET.get('page', 1))
+    context = {
+        'diagnosisLists':diagnosisLists,
+        'user':user,
+        'MEDIA_URL': settings.MEDIA_URL,
+    }
+    try:
+        
+        diagnosisObject = get_object_or_404(DiagnosisDetails, pk=diagnosisID)
+        if request.method == 'POST':
+            diagnosisObject.chief_conplaint = request.POST.get('cheifCon')
+            diagnosisObject.secondary_conplaint = request.POST.get('secCon')
+            diagnosisObject.physical_findings = request.POST.get('phyFind')
+            diagnosisObject.test_results = request.POST.get('testResult')
+            diagnosisObject.primary_diagnosis = get_object_or_404(Diagnosis, pk=request.POST.get('primaryDiag'))
+            diagnosisObject.secondary_diagnosis = get_object_or_404(Diagnosis, pk=request.POST.get('secondaryDiag'))
+            
+            diagnosisObject.save()
+            medicines = request.POST.getlist('prescription[]')
+            quantities = request.POST.getlist('quantity[]')
+            instructions = request.POST.getlist('instruction[]')
+            
+            existing_prescriptions = PrescribedMedicine.objects.filter(relatedDiagDetail=diagnosisObject)
+            existing_prescriptions.delete()
+            
+            for medicine, quantity, instruction in zip(medicines, quantities, instructions):
+                newPrescribedMedicine = PrescribedMedicine(
+                    relatedDiagDetail=get_object_or_404(DiagnosisDetails, pk=diagnosisObject.id),
+                    medicine=get_object_or_404(Medicine, pk=medicine),
+                    quantity=quantity,
+                    instruction=instruction
+                )
+                newPrescribedMedicine.save()
+
+            if request.POST.get('admitCheck') == 'True':
+                admissionQuery = Admission.objects.filter(
+                    related_diag_detail_id = diagnosisObject.id
+                )
+                admissionObject = admissionQuery.first()
+                admissionObject.admission_reason = request.POST.get('admit-reason')
+                admissionObject.admitted_ward = get_object_or_404(Ward, pk=request.POST.get('ward'))
+                admissionObject.save()
+            context['success_message'] = "The diagnosis is updated successfully"
+        return render(request, 'DoctorApp/diagnosed-queue.html', context)
+    except Exception as e:
+        error_message = f"Error: {e}"
+        context['error_message'] = error_message
+        return render(request, 'DoctorApp/diagnosed-queue.html', context)
