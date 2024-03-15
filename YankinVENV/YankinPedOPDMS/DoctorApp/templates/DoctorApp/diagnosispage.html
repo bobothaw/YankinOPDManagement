@@ -119,7 +119,9 @@
         var form = $('#diagform');
         var checkbox = $('#admitCheck');
         var chShipBlock = $('#wardDiv');
+        {% block warddisplay %}
         chShipBlock.hide();
+        {% endblock warddisplay %}
 
         checkbox.on('click', function() {
             if ($(this).is(':checked')) {

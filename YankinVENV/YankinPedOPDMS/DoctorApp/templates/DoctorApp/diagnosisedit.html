@@ -30,6 +30,7 @@
         <label for="ward" class="form-label">Ward</label>
         <select name="ward" id="ward" class="form-select">
             <option value="">Select a ward</option>
+            <option value="">{{admission.admitted_ward.id}}</option>
             {% for ward in wards %}
                 <option value="{{ward.id}}" {% if ward.id == admission.admitted_ward.id %}selected{% endif %}>{{ward.ward_name}}</option>
             {% endfor %}
@@ -37,7 +38,8 @@
     </div>
     <div>
         <label for="ward" class="form-label">Admission Reason</label>
-        <input type="text" name="admit-reason" class="form-control" value="{{admission.admission_reason}}">
+        <a href=""></a>
+        <input type="text" value="{{admission.admission_reason}}" name="admit-reason" class="form-control">
     </div>
 </div>
 <div class="mb-3 form-check">
@@ -45,3 +47,10 @@
     <label class="form-check-label" for="admitCheck">Admit the patient</label>
 </div>
 {% endblock admissionfields %}
+
+{% if admission %}
+    {% block warddisplay %}
+    chShipBlock.show();
+    alert("admission is here")
+    {% endblock warddisplay %}
+{% endif %}

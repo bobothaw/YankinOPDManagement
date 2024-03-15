@@ -112,10 +112,11 @@ def diagnosisEdit(request, diagnosisID):
     wards = Ward.objects.all()
     medicines = Medicine.objects.all()
     diagnosis = get_object_or_404(DiagnosisDetails, pk=diagnosisID)
-    waitingID = diagnosis.waitingList
+    waitingID = diagnosis.waitingList.id
     waitingPatient = get_object_or_404(WaitingList, pk=waitingID)
-    prescribedmedicines = PrescribedMedicine.objects.filter(relatedDiagDetail=diagnosisID)
-    admission = Admission.objects.filter(related_diag_detail=diagnosisID)
+    prescribedmedicines = PrescribedMedicine.objects.filter(relatedDiagDetail_id=diagnosisID)
+    admissionsQuery = Admission.objects.filter(related_diag_detail_id=diagnosisID)
+    admission = admissionsQuery.first()
     diaglist = Diagnosis.objects.all()
     context = {
         'user':user,
