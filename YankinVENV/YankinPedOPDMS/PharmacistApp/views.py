@@ -4,6 +4,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 from datetime import date
 from django.db.models import Q
+from DoctorApp.models import DiagnosisDetails, PrescribedMedicine
 
 today_date = date.today().strftime('%Y-%m-%d')
 # Create your views here.
@@ -78,4 +79,16 @@ def medicine_edit(request, medicineID):
             return render (request, 'PharmacistApp/pharmacy-medlist.html', {'MEDIA_URL': settings.MEDIA_URL, 'medicines':medicines, 'user':user, 'error_message': error_message})
 
     return render (request, 'PharmacistApp/pharmacy-edit.html', {'MEDIA_URL': settings.MEDIA_URL, 'medicine':medicine, 'user':user, 'medTypes':medTypes})
+
+def prescribedList(request):
+    user = request.user
+    diagnosisQuery = DiagnosisDetails.objects.filter(is_prescription_denied=None).order_by('diagnosed_datetime')
+    paginator = Paginator(diagnosisQuery, 10)
+    diagLists =  paginator.get_page(request.GET.get('page', 1))
+    context = {
+        'diagLists': diagLists,
+        'user': user,
+        'MEDIA_URL': settings.MEDIA_URL,
+        
+    }
 
