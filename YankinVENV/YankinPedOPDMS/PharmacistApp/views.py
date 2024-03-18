@@ -95,6 +95,15 @@ def prescribedList(request):
 def presVerify(request, diagID):
     user = request.user
     diagnosis = get_object_or_404(DiagnosisDetails, pk=diagID)
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == 'confirm':
+            diagnosis.is_prescription_denied = False
+            diagnosis.save()
+        elif action == 'deny':
+            diagnosis.is_prescription_denied = True
+            diagnosis.save()
+        diagnosis.is_prescription_denied = False
     prescriptions = PrescribedMedicine.objects.filter(relatedDiagDetail = get_object_or_404(DiagnosisDetails, pk=diagID))
     context = {
         'diagnosis':diagnosis,
@@ -103,3 +112,5 @@ def presVerify(request, diagID):
         'MEDIA_URL': settings.MEDIA_URL,
     }
     return render(request, 'PharmacistApp/prescription-verify', context)
+
+
