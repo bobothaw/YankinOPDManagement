@@ -89,6 +89,15 @@ def prescribedList(request):
         'diagLists': diagLists,
         'user': user,
         'MEDIA_URL': settings.MEDIA_URL,
-        
     }
+    return render (request, 'PharmacistApp/prescribed-list.html', context)
 
+def presVerify(request, diagID):
+    user = request.user
+    prescriptions = PrescribedMedicine.objects.filter(relatedDiagDetail = get_object_or_404(DiagnosisDetails, pk=diagID))
+    context = {
+        'prescriptions':prescriptions,
+        'user' : user,
+        'MEDIA_URL': settings.MEDIA_URL,
+    }
+    return render(request, 'PharmacistApp/prescription-verify', context)

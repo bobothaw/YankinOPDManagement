@@ -16,11 +16,11 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endif %}
-{% if prescriptions|length == 0 %}
+{% if diagLists|length == 0 %}
     <h5 class= "mt-3">{% block noDataText %} There is no prescription to check for today.{% endblock noDataText %}</h5>
 {% else %}
 <div class="row row-cols-1 row-cols-md-2 g-4">
-    {% for diagPresc in diagPrescriptions %}
+    {% for diagList in diagLists %}
         <div class="col">
             <div class="card">
                 <div class=" p-3 {% block textColor %}text-success{% endblock textColor %} text-center bg-light card-title">
@@ -29,26 +29,28 @@
                 <div class="card-body">
                     <h5 class="card-title">
                         Patient Name: {{waitingItem.patient.patient_name}}
+                        {{diagList.waitingList.patient.patient_name}}
                     </h5>
                     <p class="card-text">
-                        Gender: {{waitingItem.patient.gender}}
+                        Gender: {{diagList.waitingList.patient.gender}}
                     </p>
                     <p class="card-text">
-                        Guardian: {{waitingItem.patient.guardian_name}}
+                        Guardian: {{diagList.waitingList.patient.guardian_name}}
                     </p>
                     <p class="card-text">
                         {% load custom_filters %}
-                        {% with patient_dob=waitingItem.patient.date_of_birth %}
+                        {% with patient_dob=diagList.waitingList.patient.date_of_birth %}
                             Age: {{ patient_dob|calculate_age }}
                         {% endwith %}
                     </p>
-                    {% block vitalSigns %}
                     <p class="card-text">
-                        <small class="text-muted">Added {{waitingItem.queue_date_time|timesince}} ago.</small>
+                        <small class="text-muted">Added {{diagList.diagnosed_datetime|timesince}} ago.</small>
                     </p>
-                    {% endblock vitalSigns %}
-                    <a href="{% block urlText %}{% url "nurseRecord" waitingItem.id %}{% endblock urlText %}" class="btn btn-primary col-12">
-                        {% block linkText %}View{% endblock linkText %}                    
+                    <p class="card-text">
+                        <small class="text-muted">Prescribed By: {{diagList.diagnosedBy.first_name}}{{diagList.diagnosedBy.last_name}}</small>
+                    </p>
+                    <a href="{% block urlText %}{% url "presVerify" diagList.id %}{% endblock urlText %}" class="btn btn-primary col-12">
+                        {% block linkText %}View Prescription{% endblock linkText %}                    
                     </a>
                 </div>
             </div>
@@ -57,33 +59,33 @@
 </div>
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
-        {% if waitingLists.has_previous %}
+        {% if diagLists.has_previous %}
             <li class="page-item">
                 <a class="page-link" href="?page=1" aria-label="First">
                     <span aria-hidden="true">&laquo;&laquo;</span>
                 </a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?page={{ waitingLists.previous_page_number }}" aria-label="Previous">
+                <a class="page-link" href="?page={{ diagLists.previous_page_number }}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
         {% endif %}
     
-        {% for page in waitingLists.paginator.page_range %}
-            <li class="page-item {% if page == waitingLists.number %}active{% endif %}">
+        {% for page in diagLists.paginator.page_range %}
+            <li class="page-item {% if page == diagLists.number %}active{% endif %}">
                 <a class="page-link" href="?page={{ page }}">{{ page }}</a>
             </li>
         {% endfor %}
     
-        {% if waitingLists.has_next %}
+        {% if diagLists.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ waitingLists.next_page_number }}" aria-label="Next">
+                <a class="page-link" href="?page={{ diagLists.next_page_number }}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?page={{ waitingLists.paginator.num_pages }}" aria-label="Last">
+                <a class="page-link" href="?page={{ diagLists.paginator.num_pages }}" aria-label="Last">
                     <span aria-hidden="true">&raquo;&raquo;</span>
                 </a>
             </li>
