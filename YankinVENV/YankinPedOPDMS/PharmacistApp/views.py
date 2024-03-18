@@ -95,6 +95,13 @@ def prescribedList(request):
 def presVerify(request, diagID):
     user = request.user
     diagnosis = get_object_or_404(DiagnosisDetails, pk=diagID)
+    diagnosisQuery = DiagnosisDetails.objects.filter(Q(is_prescription_denied=None) | Q(is_prescription_denied=True)).order_by('diagnosed_datetime')
+    paginator = Paginator(diagnosisQuery, 10)
+    diagLists =  paginator.get_page(request.GET.get('page', 1))
+    context = {
+            'user':user,
+            'MEDIA_URL': settings.MEDIA_URL,
+        }
     if request.method == 'POST':
         action = request.POST.get('action')
         if action == 'confirm':
@@ -103,14 +110,10 @@ def presVerify(request, diagID):
         elif action == 'deny':
             diagnosis.is_prescription_denied = True
             diagnosis.save()
-        diagnosis.is_prescription_denied = False
-    prescriptions = PrescribedMedicine.objects.filter(relatedDiagDetail = get_object_or_404(DiagnosisDetails, pk=diagID))
-    context = {
-        'diagnosis':diagnosis,
-        'prescriptions':prescriptions,
-        'user' : user,
-        'MEDIA_URL': settings.MEDIA_URL,
-    }
-    return render(request, 'PharmacistApp/prescription-verify', context)
-
-
+        context['diagLists'] = diagLists
+        return render (request, 'PharmacistApp/prescribed-list.html', context)
+    else:
+        prescriptions = PrescribedMedicine.objects.filter(relatedDiagDetail = get_object_or_404(DiagnosisDetails, pk=diagID))
+        context['prescriptions']=prescriptions
+        context['diagnosis']= diagnosis
+        return render(request, 'PharmacistApp/prescription-verify.html', context)
