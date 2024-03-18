@@ -7,11 +7,94 @@
 {% block content %}
 
 <h5 class="card-title fw-semibold mb-4 text-center">Verify this pat</h5>
-<form method ="post", action = "{% url "patientInsert" %}">
-    {% csrf_token %}
-     
-    <button type="submit" class="btn btn-success col-5" value="confirm">Confirm</button>
-    <button type="submit" class="btn btn-error col-5" value="deny">Deny</button>
+  <form method ="post", action = "{% url "patientInsert" %}">
+      {% csrf_token %}
+      <div class="card">
+        <div class=" p-3 text-primary text-center bg-light card-title">
+            {% block headerText %}Diagnosis page for {{waitingPatient.patient.patient_name}} {% endblock headerText %} 
+        </div>
+        <div class="card-body">
+        <h5 class="card-title">
+          Patient Name:{{waitingPatient.patient.patient_name}}
+        </h5>
+        <p class="card-text">
+          Primary Diagnosis: {{diagnosis.primary_diagnosis}}
+        </p>
+        <p class="card-text">
+          Secondary Diagnosis: {{diagnosis.secondary_diagnosis}}
+        </p>
+        <p class="card-text">
+          Physical Findings: {{diagnosis.physical_findings}}
+        </p>
+        <p class="card-text">
+          Test results: {{diagnosis.test_results}}
+        </p>
+        {% for prescription in prescriptions %}
+        <div class="prescribedmedicine">
+          
+        </div>
+        {% endfor %}
+          
+          
+          <div id="prescription-fields">
+              <h6>Prescribe Medicines Here!!</h6>
+              {% block prescriptionField %}
+                  <div class="mb-5 prescription-field">
+                      <div class="input-group">
+                          <label for="" class="input-group-text">Medicine</label>
+                          <select name="prescription[]" class="form-select" required>
+                              <option value="">Select a medicine</option>
+                              {% for medicine in medicines %}
+                                  <option value="{{medicine.id}}">{{medicine.name}}</option>
+                              {% endfor %}
+                          </select>
+                          <input type="number" name="quantity[]" class="form-control" required>
+                          <label for="" class="input-group-text">Unit Example</label>
+                      </div>
+                      <label for="" class="form-label">Instruction</label>
+                      <input type="text" name="instruction[]" class="form-control" required>
+                  </div>
+              {% endblock prescriptionField %}
+          </div>
+          <div class="row justify-content-end">
+              <div class="col-auto">
+                  <button type="button" id="add-prescription" class="btn btn-success mb-3">Add another medicine</button>
+              </div>
+              <div class="col-auto">
+                  <button type="button" id="delete-prescription" class="btn btn-danger mb-3" disabled>Undo medicine</button>
+              </div>
+          </div>
+          {% block admissionfields %}
+          <div class="mb-3" id="wardDiv">
+              <div class="mb-3">
+                  <label for="ward" class="form-label">Ward</label>
+                  <select name="ward" id="ward" class="form-select">
+                      <option value="">Select a ward</option>
+                      {% for ward in wards %}
+                          <option value="{{ward.id}}">{{ward.ward_name}}</option>
+                      {% endfor %}
+                  </select>
+              </div>
+              <div>
+                  <label for="ward" class="form-label">Admission Reason</label>
+                  <input type="text" name="admit-reason" class="form-control">
+              </div>
+          </div>
+          <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="admitCheck" name = "admitCheck" value = "True">
+              <label class="form-check-label" for="admitCheck">Admit the patient</label>
+          </div>
+          {% endblock admissionfields %}
+          
+          <button type="submit" class="col-12 btn btn-primary">
+              {% block btnText %}Diagnose{% endblock btnText %}
+          </button>
+        </div>
+    </div>
+
+
+      <button type="submit" class="btn btn-success col-5" value="confirm">Confirm</button>
+      <button type="submit" class="btn btn-error col-5" value="deny">Deny</button>
   </form>
 
 {% endblock content %}

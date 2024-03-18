@@ -94,8 +94,10 @@ def prescribedList(request):
 
 def presVerify(request, diagID):
     user = request.user
+    diagnosis = get_object_or_404(DiagnosisDetails, pk=diagID)
     prescriptions = PrescribedMedicine.objects.filter(relatedDiagDetail = get_object_or_404(DiagnosisDetails, pk=diagID))
     context = {
+        'diagnosis':diagnosis,
         'prescriptions':prescriptions,
         'user' : user,
         'MEDIA_URL': settings.MEDIA_URL,
