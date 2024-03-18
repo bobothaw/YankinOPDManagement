@@ -99,9 +99,9 @@ def presVerify(request, diagID):
     paginator = Paginator(diagnosisQuery, 10)
     diagLists =  paginator.get_page(request.GET.get('page', 1))
     context = {
-            'user':user,
-            'MEDIA_URL': settings.MEDIA_URL,
-        }
+        'user':user,
+        'MEDIA_URL': settings.MEDIA_URL,
+    }
     if request.method == 'POST':
         action = request.POST.get('action')
         if action == 'confirm':

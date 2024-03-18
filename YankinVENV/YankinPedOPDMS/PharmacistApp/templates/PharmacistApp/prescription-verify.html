@@ -7,15 +7,15 @@
 {% block content %}
 
 <h5 class="card-title fw-semibold mb-4 text-center">Verify this prescription</h5>
-  <form method ="post", action = "{% url "patientInsert" %}">
+  <form method ="post", action = "{% url "presVerify" diagnosis.id %}">
       {% csrf_token %}
       <div class="card">
         <div class=" p-3 text-primary text-center bg-light card-title">
-            {% block headerText %}Diagnosis page for {{waitingPatient.patient.patient_name}} {% endblock headerText %} 
+            {% block headerText %}Prescription for patient {{diagnosis.waitingList.patient.patient_name}} {% endblock headerText %} 
         </div>
         <div class="card-body">
           <h5 class="card-title">
-            Patient Name:{{waitingPatient.patient.patient_name}}
+            Patient Name:{{diagnosis.waitingList.patient.patient_name}}
           </h5>
           <p class="card-text">
             Primary Diagnosis: {{diagnosis.primary_diagnosis}}
@@ -30,24 +30,24 @@
             Test results: {{diagnosis.test_results}}
           </p>
           {% for prescription in prescriptions %}
-          <div class="prescribedmedicine">
-            <p class="card-text">
-              Medicine: {{prescription.medicine.name}}
-            </p>
-            <p class="card-text">
-              Quantity: {{prescription.quantity}}
-            </p>
-            <p class="card-text">
-              Insturction: {{prescription.instruction}}
-            </p>
-          </div>
+            <div class="prescribedmedicine mb-3 border border-1 rounded p-2">
+              <p class="card-text">
+                Medicine: {{prescription.medicine.name}}
+              </p>
+              <p class="card-text">
+                Quantity: {{prescription.quantity}} {{prescription.medicine.unit}}
+              </p>
+              <p class="card-text">
+                Instruction: {{prescription.instruction}}
+              </p>
+            </div>
           {% endfor %}
           <div class="row justify-content-end">
               <div class="col-auto">
-                <button type="submit" class="btn btn-success" value="confirm">Confirm</button>
+                <button type="submit" class="btn btn-success" name="action" value="confirm">Confirm</button>
               </div>
               <div class="col-auto">
-                <button type="submit" class="btn btn-error" value="deny">Deny</button>
+                <button type="submit" class="btn btn-danger" name="action" value="deny">Deny</button>
               </div>
           </div>
         </div>
