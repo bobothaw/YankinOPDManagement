@@ -23,7 +23,7 @@
       <!-- Sidebar scroll-->
       <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
-          <a href="./index.html" class="text-nowrap logo-img" aria-label="Yankin Logo">
+          <a href="" class="text-nowrap logo-img" aria-label="Yankin Logo">
             <img src="{% static 'common/images/logos/darklogo.png' %}" width="180" alt="" />
           </a>
           <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -105,11 +105,11 @@
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="" aria-expanded="false">
+              <a class="sidebar-link" href="{% url "logout" %}" aria-expanded="false">
                 <span>
-                  <i class="ti ti-user-plus"></i>
+                  <i class="ti ti-logout"></i>
                 </span>
-                <span class="hide-menu">Register</span>
+                <span class="hide-menu">Logout</span>
               </a>
             </li>
           </ul>
@@ -132,12 +132,6 @@
                 <i class="ti ti-menu-2"></i>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link nav-icon-hover" href="javascript:void(0)" aria-label="notification bell">
-                <i class="ti ti-bell-ringing"></i>
-                <div class="notification bg-primary rounded-circle"></div>
-              </a>
-            </li>
           </ul>
           <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
@@ -149,16 +143,16 @@
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                   <div class="message-body">
                     <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-user fs-6"></i>
+                      <i class="fa-regular fa-user fs-5"></i>
                       <p class="mb-0 fs-3">{{user.first_name}} {{user.last_name}}</p>
                     </a>
                     <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-mail fs-6"></i>
-                      <p class="mb-0 fs-3">My Account</p>
+                      <i class="fa-solid fa-user-tag fs-5"></i>
+                      <p class="mb-0 fs-3">{{user.groups.first}}</p>
                     </a>
                     <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                      <i class="ti ti-list-check fs-6"></i>
-                      <p class="mb-0 fs-3">My Task</p>
+                      <i class="fa-regular fa-calendar fs-5"></i>
+                      <p class="mb-0 fs-3">{{ user.date_joined|date:"Y-m-d" }}</p>
                     </a>
                     <a href="{% url "logout" %}" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                   </div>
@@ -188,6 +182,15 @@
   {% comment %} <script src="{% static 'common/js/sidebarmenu.js' %}"></script> {% endcomment %}
   <script src="{% static 'common/js/app.min.js' %}"></script>
   <script src="{% static 'common/libs/simplebar/dist/simplebar.js' %}"></script>
+  <script>
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+      return new bootstrap.Popover(popoverTriggerEl)
+    })
+    var popover = new bootstrap.Popover(document.querySelector('.example-popover'), {
+      container: 'body'
+    })
+  </script>
 </body>
 
 </html>

@@ -19,13 +19,13 @@ text-success
 {% block vitalSigns %}
 
 <p class="card-text fw-bold">
-    Temperature: {{waitingItem.temperature}}
+    Temperature: {{waitingItem.temperature}} °F
 </p>
 <p class="card-text fw-bold">
-    Body Weight: {{waitingItem.weight}}
+    Body Weight: {{waitingItem.weight}} kg
 </p>
 <p class="card-text fw-bold">
-    Blood Pressure(systole/diastole): {{waitingItem.systole}}/{{waitingItem.diastole}}
+    SBP/DBP: {{waitingItem.systole}}/{{waitingItem.diastole}} mmHg
 </p>
 
 {% endblock vitalSigns %}

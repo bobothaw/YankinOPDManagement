@@ -60,24 +60,14 @@
   </form>
 {% elif patients|length > 0 %}
 {% include "ReceptionApp/searchform.html" %}
-{% if success_message %}
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Success: </strong> {{success_message}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% elif error_message %}
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    Oh noo {{user.first_name}} {{user.last_name}}, {{error_message}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% endif %}
+{% include "common/success-error-message.html" %}
 <div class="table-responsive mb-3">
     
     <table class="table table-hover">
         <thead>
         <tr>
             {% block tableHeading %}
-                <th scope="col">ID</th>
+                <th scope="col">#</th>
                 <th scope="col">Name</th>
                 <th scope="col">DOB</th>
                 <th scope="col">Gender</th>
@@ -96,7 +86,7 @@
             {% block tableContent %}    
             {% for patient in patients %}
                 <tr>
-                    <th scope="row">{{patient.id}}</th>
+                    <th scope="row">{{forloop.counter}}</th>
                     <td>{{patient.patient_name}}</td>
                     <td>{{patient.date_of_birth}}</td>
                     <td>{{patient.gender}}</td>

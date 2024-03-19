@@ -48,7 +48,7 @@
 </div>
 {% endblock admissionfields %}
 
-{% if admission %}
+{% if admission == None %}
     {% block warddisplay %}
     chShipBlock.show();
     {% endblock warddisplay %}

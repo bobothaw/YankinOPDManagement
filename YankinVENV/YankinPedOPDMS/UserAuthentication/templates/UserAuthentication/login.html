@@ -29,20 +29,10 @@ class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align
               <label for="password" class="form-label">Password</label>
               <input type="password" class="form-control" id="password" name="password" required>
             </div>
-            <div class="d-flex align-items-center justify-content-between mb-4">
-              <div class="form-check">
-                <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked" checked>
-                <label class="form-check-label text-dark" for="flexCheckChecked">
-                  Remember this Device
-                </label>
-              </div>
-              <a class="text-primary fw-bold" href="">Forgot Password?</a>
+            <div class="d-flex align-items-center justify-content-end mb-4">
+              <a tabindex = "0" class="text-primary fw-bold" role="button" data-bs-toggle="popover" data-bs-trigger="focus" title="Forget Password" data-bs-content="If you forget your password, please contact the admin team immediately to reset your password.">Forgot Password?</a>
             </div>
             <button type="submit" class="btn btn-primary w-100 py-2 fs-4 mb-2 rounded-2">Sign In</button>
-            <div class="d-flex align-items-center justify-content-center">
-              <p class="fs-4 mb-0 fw-bold">New to Modernize?</p>
-              <a class="text-primary fw-bold ms-2" href="./authentication-register.html">Create an account</a>
-            </div>
           </form>
         </div>
       </div>
@@ -50,7 +40,5 @@ class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align
   </div>
 </div>
 </div>
-
-
 
 {% endblock login %}

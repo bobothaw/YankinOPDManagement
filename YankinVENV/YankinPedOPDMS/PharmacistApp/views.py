@@ -82,7 +82,7 @@ def medicine_edit(request, medicineID):
 
 def prescribedList(request):
     user = request.user
-    diagnosisQuery = DiagnosisDetails.objects.filter(is_prescription_denied=None).order_by('diagnosed_datetime')
+    diagnosisQuery = DiagnosisDetails.objects.filter(Q(is_prescription_denied=None) | Q(is_prescription_denied=True)).order_by('diagnosed_datetime')
     paginator = Paginator(diagnosisQuery, 10)
     diagLists =  paginator.get_page(request.GET.get('page', 1))
     context = {
@@ -107,9 +107,16 @@ def presVerify(request, diagID):
         if action == 'confirm':
             diagnosis.is_prescription_denied = False
             diagnosis.save()
+            prescriptions = PrescribedMedicine.objects.filter(relatedDiagDetail = get_object_or_404(DiagnosisDetails, pk=diagID))
+            for prescription in prescriptions:
+                prescribedMedicine = get_object_or_404(Medicine, pk = prescription.medicine.id)
+                prescribedMedicine.stock -= prescription.quantity
+                prescribedMedicine.save()
+            context['success_message']="The prescription has been confirmed."    
         elif action == 'deny':
             diagnosis.is_prescription_denied = True
             diagnosis.save()
+            context['error_message']="The prescription has been denied."
         context['diagLists'] = diagLists
         return render (request, 'PharmacistApp/prescribed-list.html', context)
     else:

@@ -21,18 +21,19 @@ from django.urls import path, include
 from common.views import base_view
 from UserAuthentication.views import login_view, logout_view, doctor_view, unauthorized_view, admin_view, nurse_view, pharmacist_view, receptionist_view
 from NurseApp.views import waitingList_view
+from DoctorApp.views import docPatQueueView
+from PharmacistApp.views import medicine_insert
+from ReceptionApp.views import patient_insert_view
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
-    path('', base_view, name='base'),
-    path('login/', login_view, name='login'),
-    path('dashboard/', base_view, name = 'dashboard'),
+    path('', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
-    path('doctor/', doctor_view, name = 'doctor_dashboard'),
+    path('doctor/', docPatQueueView, name = 'doctor_dashboard'),
     path('unauthorized/', unauthorized_view, name='unauthorized'),
     path('admin_dash/', admin_view, name = 'admin_dashboard'),
     path('nurse/', waitingList_view, name = 'nurse_dashboard'),
-    path('pharmacist/', pharmacist_view, name = 'pharmacist_dashboard'),
-    path('receptionist/', receptionist_view, name = 'receptionist_dashboard'),
+    path('pharmacist/', medicine_insert, name = 'pharmacist_dashboard'),
+    path('receptionist/', patient_insert_view, name = 'receptionist_dashboard'),
     path('ReceptionApp/', include('ReceptionApp.urls')),
     path('NurseApp/', include('NurseApp.urls')),
     path('PharmacistApp/', include('PharmacistApp.urls')),
