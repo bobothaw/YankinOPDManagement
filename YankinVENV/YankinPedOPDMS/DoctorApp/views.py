@@ -147,6 +147,7 @@ def diagnosisHistoryView (request):
     }
     return render(request, 'DoctorApp/diagnosed-queue.html', context)
 
+@login_required
 def diagnosisUpdate(request, diagnosisID):
     user = request.user
     diagnosisQuery = DiagnosisDetails.objects.filter(
@@ -202,3 +203,39 @@ def diagnosisUpdate(request, diagnosisID):
         error_message = f"Error: {e}"
         context['error_message'] = error_message
         return render(request, 'DoctorApp/diagnosed-queue.html', context)
+    
+
+@login_required
+def admissionView(request):
+    user = request.user
+    admissionsQuery = Admission.objects.filter(is_discharged = False)
+    paginator = Paginator(admissionsQuery, 10)
+    admissions = paginator.get_page(request.GET.get('page', 1))
+    context = {
+        'user': user,
+        'admissions': admissions,
+        'MEDIA_URL': settings.MEDIA_URL,
+    }
+    return render(request, 'DoctorApp/admission-view.html', context)
+
+@login_required
+def admissionDelete(request, admissionID):
+    user = request.user
+    admissionsQuery = Admission.objects.filter(is_discharged = False)
+    paginator = Paginator(admissionsQuery, 10)
+    admissions = paginator.get_page(request.GET.get('page', 1))
+    context = {
+        'user':user,
+        'MEDIA_URL': settings.MEDIA_URL,
+        'admissions':admissions,
+    }
+    try:
+        admissionObejct = get_object_or_404(Admission, pk=admissionID)
+        admissionObejct.delete()
+        context['success_message']="The admission of the patient has been successfully deleted."
+        return render(request, 'DoctorApp/admission-view.html', context)
+    except Exception as e:
+        error_message = f"Error: {e}"
+        context['eror_message'] = error_message
+        return render(request, 'DoctorApp/admission-view.html', context)
+        

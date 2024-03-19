@@ -63,10 +63,10 @@
                 <div class="mb-5 prescription-field">
                     <div class="input-group">
                         <label for="" class="input-group-text">Medicine</label>
-                        <select name="prescription[]" class="form-select" required>
+                        <select name="prescription[]" class="form-select medicine-select" required>
                             <option value="">Select a medicine</option>
                             {% for medicine in medicines %}
-                                <option value="{{medicine.id}}">{{medicine.name}}</option>
+                                <option value="{{medicine.id}}" data-unit-example="{{medicine.unit}}">{{medicine.name}}</option>
                             {% endfor %}
                         </select>
                         <input type="number" name="quantity[]" class="form-control" required>
@@ -149,6 +149,10 @@
             var numMedicines = $('#prescription-fields').children('.prescription-field').length;
             $('#delete-prescription').prop('disabled', numMedicines <= 1); // Disable delete button if only one medicine field remains
         }
+        $(document).on('change', '.medicine-select', function(){
+            var unitExample = $(this).find(':selected').data('unit-example');
+            $(this).closest('.prescription-field').find('.input-group-text:last').text(unitExample);
+        });
     });
 </script>
 {% endblock content %}
