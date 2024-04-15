@@ -2,6 +2,8 @@
 
 {% block editURL %}{% url "medicineEdit" medicine.id %}{% endblock editURL %}
 
+{% block headingText %}Edit Medicine from the Inventory{% endblock headingText %}
+
 {% block medNameValue %}
 value = "{{medicine.name}}"
 {% endblock medNameValue %}

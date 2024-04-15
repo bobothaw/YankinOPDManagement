@@ -7,7 +7,7 @@
 {% block content %}
 {% include "common/success-error-message.html" %}
 
-<h5 class="card-title fw-semibold mb-4 text-center">Add Medicines in the Pharmacy Inventory</h5>
+<h5 class="card-title fw-semibold mb-4 text-center"> {% block headingText %}Add Medicines in the Pharmacy Inventory{% endblock headingText %} </h5>
 
 <form method ="post", action = "{% block editURL %}{% url "medicineadd" %}{% endblock editURL %}">
     {% csrf_token %}
