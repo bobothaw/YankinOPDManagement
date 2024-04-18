@@ -9,7 +9,7 @@ class Patient(models.Model):
     patient_name = models.CharField(max_length=255)
     date_of_birth = models.DateField()
     gender = models.CharField(max_length=10)
-    NRCnum = models.CharField(max_length=255, unique=True)
+    NRCnum = models.CharField(max_length=255, unique=True, null=True)
     father_name = models.CharField(max_length=255)
     mother_name = models.CharField(max_length=255)
     guardian_name = models.CharField(max_length=255)

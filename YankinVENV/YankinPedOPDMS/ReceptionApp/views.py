@@ -16,7 +16,10 @@ def patient_insert_view(request):
         patient_name = request.POST.get('FullName')
         date_of_birth = request.POST.get('DOB')
         gender = request.POST.get('GenderRadio')
-        NRCnum = request.POST.get('NRC')
+        if request.POST.get('NRC')=='':
+            NRCnum = None
+        else:
+            NRCnum = request.POST.get('NRC')
         father_name = request.POST.get('FatherName')
         mother_name = request.POST.get('MotherName')
         guardian_name = request.POST.get('GuardianName')
