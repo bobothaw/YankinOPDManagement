@@ -19,7 +19,7 @@
       <label for="dob" class="form-label">Medicine Type</label>
       <select class="form-select" aria-label="Default select example" name="medType" required>
         {% block medTypeBlock %}
-        <option selected>Open this select menu</option>
+        <option value="" selected>Open this select menu</option>
         {% for medType in medTypes %}
         <option value="{{medType.id}}">{{medType.name}}</option>
         {% endfor %}
