@@ -40,6 +40,7 @@ def medicine_list(request):
     paginator = Paginator(medcines_list, 10)
     medicines = paginator.get_page(request.GET.get('page', 1))
     query = request.GET.get('medicineSearch', '')
+    today_date = date.today().strftime('%Y-%m-%d')
 
     if query:
         medicines_query_set = Medicine.objects.filter(
@@ -49,9 +50,9 @@ def medicine_list(request):
         )
         paginator = Paginator(medicines_query_set, 10)
         medicines = paginator.get_page(request.GET.get('page', 1))
-        return render(request, 'PharmacistApp/pharmacy-medlist.html',{'MEDIA_URL': settings.MEDIA_URL, 'medicines':medicines, 'user':user, 'query':query})
+        return render(request, 'PharmacistApp/pharmacy-medlist.html',{'MEDIA_URL': settings.MEDIA_URL, 'medicines':medicines, 'user':user, 'query':query, 'today_date': today_date})
 
-    return render(request, 'PharmacistApp/pharmacy-medlist.html', {'MEDIA_URL': settings.MEDIA_URL, 'medicines':medicines, 'user':user})
+    return render(request, 'PharmacistApp/pharmacy-medlist.html', {'MEDIA_URL': settings.MEDIA_URL, 'medicines':medicines, 'user':user, 'today_date': today_date})
 
 
 def medicine_edit(request, medicineID):
@@ -74,12 +75,12 @@ def medicine_edit(request, medicineID):
             medicine.price_per_unit = request.POST.get('price_per_unit')
             medicine.updated_by = user
             medicine.save()
-            return render (request, 'PharmacistApp/pharmacy-medlist.html', {'MEDIA_URL': settings.MEDIA_URL, 'medicines':medicines, 'user':user, 'success_message': "The medicine information is updated successfully!"})
+            return render (request, 'PharmacistApp/pharmacy-medlist.html', {'MEDIA_URL': settings.MEDIA_URL, 'medicines':medicines, 'user':user, 'success_message': "The medicine information is updated successfully!", 'today_date': today_date})
         except Exception as e:
             error_message = f"Error: {e}"
-            return render (request, 'PharmacistApp/pharmacy-medlist.html', {'MEDIA_URL': settings.MEDIA_URL, 'medicines':medicines, 'user':user, 'error_message': error_message})
+            return render (request, 'PharmacistApp/pharmacy-medlist.html', {'MEDIA_URL': settings.MEDIA_URL, 'medicines':medicines, 'user':user, 'error_message': error_message, 'today_date': today_date})
 
-    return render (request, 'PharmacistApp/pharmacy-edit.html', {'MEDIA_URL': settings.MEDIA_URL, 'medicine':medicine, 'user':user, 'medTypes':medTypes})
+    return render (request, 'PharmacistApp/pharmacy-edit.html', {'MEDIA_URL': settings.MEDIA_URL, 'medicine':medicine, 'user':user, 'medTypes':medTypes, 'today_date': today_date})
 
 def prescribedList(request):
     user = request.user
