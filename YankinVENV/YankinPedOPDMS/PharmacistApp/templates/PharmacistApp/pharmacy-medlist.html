@@ -30,13 +30,21 @@
                     <td>{{medicine.type.name}}</td>
                     <td>{{medicine.dosage}} {{medicine.unit}}</td>
                     <td>{{medicine.stock}}</td>
+                    {% if medicine.stock <= medicine.dosage %}
+                        <td class="text-warning">{{medicine.stock}} {{medicine.unit}}</td>
+                    {% elif medicine.stock > medicine.dosage %}
+                        <td class="text-success">{{medicine.stock}} {{medicine.unit}}</td>
+                    {% elif medicine.stock <= 0 %}
+                        <td class="text-danger">Out of Stock!!</td>
+                    {% endif %}
                     {% load custom_filters %}
                     {% with exp_date=medicine.expiry_date%}
-                        {% if exp_date|date_since == 1 %}
+                        {% if exp_date|date_since <= 7 %}   
+                        {% elif exp_date|date_since <= 7 %}
                             <td class="text-warning">Expires in {{ exp_date|date_since }} day</td>
-                        {% elif exp_date|date_since > 1 %}
+                        {% elif exp_date|date_since > 7 %}
                             <td class="text-success">Expires in {{ exp_date|date_since }} days</td>
-                        {% else %}
+                        {% elif exp_date|date_since %}
                             <td class="text-danger">Expired!!</td>
                         {% endif %}
                     {% endwith %}

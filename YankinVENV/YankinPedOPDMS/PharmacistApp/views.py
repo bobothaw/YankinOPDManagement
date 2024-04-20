@@ -5,6 +5,7 @@ from django.conf import settings
 from datetime import date
 from django.db.models import Q
 from DoctorApp.models import DiagnosisDetails, PrescribedMedicine
+from datetime import date
 
 today_date = date.today().strftime('%Y-%m-%d')
 # Create your views here.
@@ -35,7 +36,7 @@ def medicine_insert(request):
 
 def medicine_list(request):
     user = request.user
-    medcines_list = Medicine.objects.all()
+    medcines_list = Medicine.objects.all().order_by('-stock')
     paginator = Paginator(medcines_list, 10)
     medicines = paginator.get_page(request.GET.get('page', 1))
     query = request.GET.get('medicineSearch', '')
@@ -55,7 +56,7 @@ def medicine_list(request):
 
 def medicine_edit(request, medicineID):
     user = request.user
-    medcines_list = Medicine.objects.all()
+    medcines_list = Medicine.objects.all().order_by('-stock')
     paginator = Paginator(medcines_list, 10)
     medicines = paginator.get_page(request.GET.get('page', 1))
     medicine = get_object_or_404(Medicine, pk=medicineID)
